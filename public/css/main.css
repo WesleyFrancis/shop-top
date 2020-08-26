@@ -29,7 +29,8 @@ header{
     background-repeat: no-repeat;
     margin: 0px auto;
    background-color: rgba(160, 222, 255, 0.541);
-}
+   background-attachment: fixed;
+  }
 #randomCategoriesLister{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -292,3 +293,13 @@ header{
 
 
 /* ---------------LOGIN FORM CONTAINER ------------------- */
+/*---------------------- PRODUCT PAGE -----------------------------*/
+.imgThumb{
+  max-width:100%;
+}
+
+
+
+
+
+/*---------------------- PRODUCT PAGE -----------------------------*/
