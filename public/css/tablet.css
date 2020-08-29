@@ -1,0 +1,8 @@
+#dashboard{
+    grid-template-columns: 1fr;
+    width: 100%;
+}
+#basicInfo > ul > li{
+    width:100%;
+    padding:10px;
+}

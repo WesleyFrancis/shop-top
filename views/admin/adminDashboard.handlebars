@@ -1,0 +1,206 @@
+<div id="banner" class="animated fadeInDown" style="background-image: url('../img/adminDashboard.png');">
+            <div id="profilePicCont">
+                <div class="animated fadeInUp delay-1s"><i class="fa fa-pencil-alt"></i></div>
+                <img class="animated fadeIn delay-1s" src="../img/DefaultProPic.png" alt="default profile Image">
+            </div>
+            <div id="proName" style="background:#ffffff;color:#215093;padding:5px;border-radius:10px;">{{clerkInfo.firstName}} {{clerkInfo.lastName}}<a href="#" id="adminIcon"><i class="fa fa-cog"></i></a></div>
+            <section>
+                <div id="ProductControllerButton" style="color:#D8E8FF;background: #6673AD;">Products</div>
+                <div id="CategoriesControllerButton" style="color:#D8E8FF;background: #6673AD;">Categories</div>
+            </section>
+        </div>
+        <div id="adminDashboardProducts">
+            <div>
+                <ul>
+                    <li id="viewProductButton"><i class="fa fa-eye"></i>&nbsp;View Products</li>
+                    <li id="addProductButton"><i class="fa fa-plus-circle"></i>&nbsp;Add Products</li>
+                    <li id="editProductButton"><i class="fa fa-edit"></i>&nbsp;Edit Products</li>
+                </ul>
+            </div>
+            <div id="viewAllProducts">
+                View
+            </div>
+            <div id="addNewProducts">
+                add
+            </div>
+            <div id="editNewProducts">
+                edit
+            </div>
+        </div>
+
+            <!-- ################################## CATEGORY SECTION ###########################################-->
+        <div id="adminDashboardCategory">
+            <div>
+                <ul>
+                    <li id="viewcategoryButton"><i class="fa fa-eye"></i>&nbsp;View Categories</li>
+                    <li id="addCategoryButton"><i class="fa fa-plus-circle"></i>&nbsp;Add Category</li>
+                    <li id="editCategoryButton"><i class="fa fa-edit"></i>&nbsp;Edit Category</li>
+                </ul>
+            </div>
+            <div id="viewAllCategories" class="animated fadeIn">
+                <!-- View Categries -->
+                <div class="catViewContainer">
+                    <div class="catViewTitle">
+                        Electronics
+                    </div>
+                    <div class="catViewDescription">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit 
+                        voluptatibus saepe accusamus assumenda sunt nisi cum possimus minima
+                         asperiores iste qui quia, tempore ipsum iusto distinctio
+                         ad officia! Impedit, a!
+                    </div>
+                    <div class="catViewPhoto">
+                        <img src="../img/category/apparel.png" alt="category Photo">
+                    </div>
+
+                </div>
+                <div class="catViewContainer">
+                    <div class="catViewTitle">
+                        Electronics
+                    </div>
+                    <div class="catViewDescription">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit 
+                        voluptatibus saepe accusamus assumenda sunt nisi cum possimus minima
+                         asperiores iste qui quia, tempore ipsum iusto distinctio
+                         ad officia! Impedit, a!
+                    </div>
+                    <div class="catViewPhoto">
+                        <img src="../img/category/apparel.png" alt="category Photo">
+                    </div>
+
+                </div>
+                <div class="catViewContainer">
+                    <div class="catViewTitle">
+                        Electronics
+                    </div>
+                    <div class="catViewDescription">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit 
+                        voluptatibus saepe accusamus assumenda sunt nisi cum possimus minima
+                         asperiores iste qui quia, tempore ipsum iusto distinctio
+                         ad officia! Impedit, a!
+                    </div>
+                    <div class="catViewPhoto">
+                        <img src="../img/category/apparel.png" alt="category Photo">
+                    </div>
+
+                </div>
+            </div>
+            <div id="addCategoryContainer" class="animated fadeIn">
+                    <!-- Add category -->
+                <form action="" method="POST" style="grid-template-rows: auto auto auto;">
+                    <div class="formContainer">
+                        <label for="categoryTitle">Category Title</label><br/>
+                        <input class="forminput" type="text" name="categoryTitle" id="categoryTitle">
+                    </div>
+                    <div class="formContainer">
+                        <label for="categoryDescription">Description</label><br/>
+                        <textarea class="forminput" type="text" name="categoryDescription" id="categoryDescription">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit 
+                            voluptatibus saepe accusamus assumenda sunt nisi cum possimus minima
+                             asperiores iste qui quia, tempore ipsum iusto distinctio
+                             ad officia! Impedit, a!
+                        </textarea>
+                    </div>
+                    <div class="formContainer">
+                        <label for="categoryPhoto">Category Photo</label><br/>
+                        <input style="background:none;border:none;box-shadow:none" class="" type="file" name="categoryPhoto" id="categoryPhoto">
+                    </div>
+                    <div class="submitContainer">
+                        <input type="submit" name="submit" id="submit" value="Continue">
+                    </div>
+                </form>
+            </div>
+            <div id="editCategoryContainer" class="animated fadeIn">
+                <!-- Edit category -->
+            <form action="" method="POST" style="grid-template-rows: auto auto auto;">
+                <div class="formContainer">
+                    <label for="categoryTitle">Category Title</label><br/>
+                    <input class="forminput" type="text" name="categoryTitle" id="categoryTitle">
+                </div>
+                <div class="formContainer">
+                    <label for="categoryDescription">Description</label><br/>
+                    <textarea class="forminput" type="text" name="categoryDescription" id="categoryDescription">
+                        Lortempore ipsum iusto distinctio
+                         ad officia! Impedit, a!
+                    </textarea>
+                </div>
+                <div class="formContainer">
+                    <label for="categoryPhoto">Category Photo</label><br/>
+                    <input style="background:none;border:none;box-shadow:none" class="" type="file" name="categoryPhoto" id="categoryPhoto">
+                </div>
+                <div class="submitContainer">
+                    <input type="submit" name="submit" id="submit" value="Continue">
+                </div>
+            </form>
+        </div>
+         <!-- ################################## CATEGORY SECTION ###########################################-->
+        </div>
+        <script type="text/javascript">
+
+    /*0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-##PRODUCTS##-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-*/
+    const viewAllCategories =document.querySelector("#viewAllCategories");
+    const addCategoryContainer =document.querySelector("#addCategoryContainer");
+    const editCategoryButton =document.querySelector("#editCategoryButton");
+    
+    const viewcategoryButton = document.querySelector("#viewcategoryButton");
+    const addCategoryButton = document.querySelector("#addCategoryButton");
+    const editCategoryContainer = document.querySelector("#editCategoryContainer");
+
+    viewcategoryButton.addEventListener("click",()=>{
+            addCategoryContainer.style.display="none"; 
+            viewAllCategories.style.display ="block";
+            editCategoryContainer.style.display = "none";
+    });
+
+    addCategoryButton.addEventListener("click",()=>{
+            addCategoryContainer.style.display="block"; 
+            viewAllCategories.style.display ="none";
+            editCategoryContainer.style.display = "none";
+    });
+    editCategoryButton.addEventListener("click",()=>{
+            addCategoryContainer.style.display="none"; 
+            viewAllCategories.style.display ="none";
+            editCategoryContainer.style.display = "block";
+    });
+    /*0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-##PRODUCTS##-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-*/
+
+    const viewProductButton = document.querySelector("#viewProductButton");
+    const addProductButton = document.querySelector("#addProductButton");
+    const editProductButton = document.querySelector("#editProductButton");
+
+    const viewAllProducts = document.querySelector("#viewAllProducts");
+    const addNewProducts = document.querySelector("#addNewProducts");
+    const editNewProducts = document.querySelector("#editNewProducts");
+
+    viewProductButton.addEventListener("click",()=>{
+        viewAllProducts.style.display="block"; 
+        addNewProducts.style.display ="none";
+        editNewProducts.style.display = "none";
+    });
+
+    addProductButton.addEventListener("click",()=>{
+        viewAllProducts.style.display="none"; 
+        addNewProducts.style.display ="block";
+        editNewProducts.style.display = "none";
+    });
+    editProductButton.addEventListener("click",()=>{
+        viewAllProducts.style.display="none"; 
+        addNewProducts.style.display ="none";
+        editNewProducts.style.display = "block";
+    });
+    const ProductControllerButton = document.querySelector("#ProductControllerButton");
+    const CategoriesControllerButton = document.querySelector("#CategoriesControllerButton");
+
+    const adminDashboardProducts = document.querySelector("#adminDashboardProducts");
+    const adminDashboardCategory = document.querySelector("#adminDashboardCategory");
+    ProductControllerButton.addEventListener("click",()=>{
+        adminDashboardCategory.style.display = "none";
+        adminDashboardProducts.style.display = "grid";
+    });
+
+    CategoriesControllerButton.addEventListener("click",()=>{
+        adminDashboardCategory.style.display = "grid";
+        adminDashboardProducts.style.display = "none";
+    });
+    //*-------------ADMIN DASHBOARD--------------------/
+</script>

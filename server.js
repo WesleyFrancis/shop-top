@@ -43,21 +43,18 @@ require('dotenv').config({path:"config/keys.env"});
 app.use(bodyParser.urlencoded({extended:false}));
 //+---------------------------- MIDDLEWARE -------------------------------------//
 //!---------------------- IMPORT & ASSIGN CONTROLLERS --------------------------//
-// const adminController = require("./controllers/admin");
-const generalController = require("./Controllers/general.js");
-// const taskController = require("./controllers/tasks");
-// const userController = require("./controllers/user");
-// const authController = require("./controllers/auth.js");
+const adminController = require("./Controllers/Admin.js");
+const generalController = require("./Controllers/General.js");
+const userController = require("./Controllers/User.js");
+// const authController = require("./Controllers/Auth.js");
 //!---------------------- IMPORT & ASSIGN CONTROLLERS --------------------------//
 //?--------------------------------- ROUTES ------------------------------------//
 app.use("/",generalController);
-// app.use("/admin",adminController);
-// app.use("/user", userController);
+app.use("/admin",adminController);
+app.use("/user",userController);
 // app.use("/task", taskController);
 // app.use("/auth", authController);
 //?--------------------------------- ROUTES ------------------------------------//
-
-
 //+------------------------------ START SERVER ----------------------------------//
 const PORT=process.env.PORT || 3000;
 app.listen(PORT,()=>{
