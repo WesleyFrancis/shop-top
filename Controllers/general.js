@@ -4,7 +4,8 @@ const mammoth = require('mammoth');
 const Schalk = require("../middleware/consoleHelper.js");
 const csvFilePath="public/csv/eurusd.csv";
 const mainCsv = require('csvtojson');
-var mkdirp = require("mkdirp");
+const mkdirp = require("mkdirp");
+const { route } = require("./Product.js");
 
 router.get("/",(req,res)=>{
     const categories = [{name:"Electronics",img:"img/category/footware.png"},{name:"computers",img:"img/category/medical.png"}] 
@@ -27,10 +28,11 @@ router.get("/",(req,res)=>{
     res.render("general/home",{
         title:"ShopTop | Shop till you Drop",
         categories,
-        products
+        products,
+        nav:true
 
         });
-    Schalk.generalError("navigated to home route")
+   // Schalk.generalError("navigated to home route")
 })
 
 router.post("/chart",(req,res)=>{
@@ -45,7 +47,6 @@ router.post("/chart",(req,res)=>{
             const u = req.body.title;
         res.json({info : u,
                 data:newObj})
-
     })
 })
 
@@ -60,7 +61,6 @@ router.get("/products/:id",(req,res)=>{
     .then(function(result){                                                   //! to be passed to the front end to be displayed to the user. in the item description/
         const html = result.value; // The generated HTML
         const messages = result.messages; // Any messages, such as warnings during conversion
-
         const Description = html;
       //  res.send(Description);
         res.render("user/productPage",{
@@ -72,6 +72,10 @@ router.get("/products/:id",(req,res)=>{
     .done();
     
 })
+
+
+
+
 //!Tested HTML UPLOADS and READING
 // router.get("/docd",(req,res)=>{
 //     mammoth.convertToHtml({path:`./public/docs/userName/Privacy Policy.docx`})

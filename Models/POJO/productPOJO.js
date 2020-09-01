@@ -1,15 +1,18 @@
 class Product 
 {
-   product_code;
+   productCode;
    min;
    max;
    price;
+   costPrice;
    quantity;
-   cost_price;
+   costPrice;
    title;
    description;
    category;
-   docxPath;
+   descriptionDocxPath;
+   imgLocation;
+   likes;
    lastModified;
    dateCreated;
 }

@@ -1,26 +1,32 @@
 const express = require("express");
 const route = express.Router();
-const adminModel = require("../Models/Admin.js"); 
-const userModel = require("../Models/User.js");
 const Schalk = require("../middleware/consoleHelper.js");
 
-route.get("/dashboard",(req,res)=>{
-    //get the admin information.
-    adminModel.getAdminInfo(1)
-    .then((adminInfo)=>{
-        userModel.getUser(adminInfo[0].userId)
-        .then((rows)=>{
+const adminModel = require("../Models/Admin.js"); 
+const userModel = require("../Models/User.js");
+const productModel = require("../Models/Product.js");
+const {isAuth} = require("../middleware/auth.js");
+const {adminSecure} = require("../middleware/auth.js");
 
-          const clerkInfo = rows[0];
-            res.render("admin/adminDashboard",{
-                title:"Admin Dashboard",
-                clerkInfo
-            })
-        })
-        .catch((err)=>{Schalk.dbError(`C|ADMIN | DASHBOARD ${err}`)})
-    })
-    .catch((err)=>{Schalk.generalError(`C|ADMIN| ${err}`)})
+
+route.get("/dashboard",isAuth,adminSecure,async(req,res)=>{
+
+    try {
+        const categoryData = await productModel.getAllCategory()
+        
+        const adminInfo = req.session.userData;
+    res.render("admin/adminDashboard",{
+        title:"Admin Dashboard",
+        adminInfo,
+        categoryData
+    });
+    } catch (error) {
+        
+    }
+
     
 });
+
+
 
 module.exports = route;

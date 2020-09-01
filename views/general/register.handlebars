@@ -1,0 +1,36 @@
+<div id="loginFormContainer" class="animated fadeIn ">
+            <img src="../img/logo.png" alt="logo">
+            
+            <form action="/auth/register" method="POST">
+                <div class="formContainer">
+                    <label for="email">First Name</label><br/>
+                    <input class="forminput" type="text" name="firstName" id="firstName">
+                </div>
+                <div class="formContainer">
+                    <label for="email">Last Name</label><br/>
+                    <input class="forminput" type="text" name="lastName" id="lastName">
+                </div>
+                <div class="formContainer">
+                    <label for="email">Email</label><br/>
+                    <input class="forminput" type="email" name="email" id="email">
+                </div>
+                <div class="formContainer">
+                    <label for="password">Password</label><br/>
+                    <input class="forminput" type="password" name="password" id="password" placeholder="At least 6 characters">
+                </div>
+                <div class="formContainer">
+                    <label for="password">Re-Enter Password</label><br/>
+                    <input class="forminput" type="password" name="Cpassword" id="password">
+                </div>
+                <div class="submitContainer">
+                    <input type="submit" name="submit" id="submit" value="Continue">
+                </div>
+            </form>
+            <div id="conditions">By Creating an account you agree to <br>
+                ShopTop’s <a href="#">conditions of use</a> and <a href="#">Privacy policy.</a>
+            </div>
+        </div>
+        <div id="signUp" class="animated fadeIn">
+            Already have an account? <a href="login">Sign In</a>
+        </div>
+        <br>

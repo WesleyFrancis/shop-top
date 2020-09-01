@@ -13,6 +13,7 @@
     <title>{{title}}</title>
 </head>
 <body>
+    {{#if nav}}
     <header>
         <nav>
             <ul id="navBarParent">
@@ -34,6 +35,7 @@
             </ul>
         </nav>
     </header>
+    {{/if}}
     <main>
         {{{body}}}
     </main>

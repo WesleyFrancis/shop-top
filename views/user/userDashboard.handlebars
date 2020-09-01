@@ -4,7 +4,7 @@
                 <div class="animated fadeInUp"><i class="fa fa-pencil-alt"></i></div>
                 <img class="animated fadeIn" src="../img/DefaultProPic.png" alt="default profile Image">
             </div>
-            <div id="proName">{{userData.firstName}} {{userData.lastName}}</div>
+            <div id="proName">{{userinfo.firstName}} {{userinfo.lastName}}</div>
             <section>
                 <div>Your Orders</div>
                 <div>History</div>
@@ -15,9 +15,9 @@
                 <div id="basicInfo">
                     <h4>Basic Information&nbsp;<i class="fa fa-pencil-alt"></i></h4>
                     <ul>
-                        <li>Full Name <div>{{userData.firstName}} {{userData.lastName}}</div></li>
-                        <li>Email Address <div>{{userData.email}}</div></li>
-                        <li>Password <div><a href="/user/changepassword/{{userData.user_id}}">Change Password</a></div></li>
+                        <li>Full Name <div>{{userinfo.firstName}} {{userinfo.lastName}}</div></li>
+                        <li>Email Address <div>{{userinfo.email}}</div></li>
+                        <li>Password <div><a href="/user/changepassword/{{userinfo.user_id}}">Change Password</a></div></li>
                     </ul>
                 </div>
                 <div id="orderHist">
@@ -33,6 +33,7 @@
             <div id="RightDashboard" class="animated fadeInRight">
                 <h4>Watch List&nbsp;<i class="fa fa-list-ul"></i></h4>
                 <div class="MainlistCont">
+                    {{#if watchList}}
                     <div class="listCont">
                         <div class="imgPrice">
                             <h6>Smart Watches</h6>
@@ -56,78 +57,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="listCont">
-                        <div class="imgPrice">
-                            <h6>Smart Watches</h6>
-                            <div><img src="../img/category/apparel.png" alt=""></div>
-                            <div class="price">TT $ 300.00</div>
-                        </div>
-                        <div class="prodDesc">
-                            <div class="moreInfo">
-                                <div class="watchLikes"><i class="fa fa-thumbs-up"></i>100</div>
-                                <div class="watchMoreInfo orangeGrd">More Info</div>
-                            </div>
-                            <div class="watchDesc">
-                                Waterproof Sport Smart Watch
-                                Monitor for IOS $ Android
-                            </div>
-                            <div class="addToCart">
-                                <i class="fa fa-shopping-cart"></i>&nbsp;Add to cart
-                            </div>
-                            <div class="WatchListTrash">
-                                <a href=""><i class="fa fa-trash-alt"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="listCont">
-                        <div class="imgPrice">
-                            <h6>Smart Watches</h6>
-                            <div><img src="../img/category/apparel.png" alt=""></div>
-                            <div class="price">TT $ 300.00</div>
-                        </div>
-                        <div class="prodDesc">
-                            <div class="moreInfo">
-                                <div class="watchLikes"><i class="fa fa-thumbs-up"></i>100</div>
-                                <div class="watchMoreInfo orangeGrd">More Info</div>
-                            </div>
-                            <div class="watchDesc">
-                                Waterproof Sport Smart Watch
-                                Monitor for IOS $ Android
-                            </div>
-                            <div class="addToCart">
-                                <i class="fa fa-shopping-cart"></i>&nbsp;Add to cart
-                            </div>
-                            <div class="WatchListTrash">
-                                <a href=""><i class="fa fa-trash-alt"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="listCont">
-                        <div class="imgPrice">
-                            <h6>Smart Watches</h6>
-                            <div><img src="../img/category/apparel.png" alt=""></div>
-                            <div class="price">TT $ 300.00</div>
-                        </div>
-                        <div class="prodDesc">
-                            <div class="moreInfo">
-                                <div class="watchLikes"><i class="fa fa-thumbs-up"></i>100</div>
-                                <div class="watchMoreInfo orangeGrd">More Info</div>
-                            </div>
-                            <div class="watchDesc">
-                                Waterproof Sport Smart Watch
-                                Monitor for IOS $ Android
-                            </div>
-                            <div class="addToCart">
-                                <i class="fa fa-shopping-cart"></i>&nbsp;Add to cart
-                            </div>
-                            <div class="WatchListTrash">
-                                <a href=""><i class="fa fa-trash-alt"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                    {{else}}
+                    safasf
+                    {{/if}}
                 </div>
             </div>
         </div>

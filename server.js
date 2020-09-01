@@ -24,12 +24,6 @@ const helper = exphbs.create({ //Handlebars helpers for client side rendering
         }
     }
 })
-app.use(session({
-    secret:'ThisIsUnBreakAble',
-    resave:false,
-    saveUninitialized:true,
-    //cookie:{secure:false}
-}))
 
 app.use(fileUpload({
     useTempFiles : true,
@@ -41,19 +35,28 @@ app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 require('dotenv').config({path:"config/keys.env"});
 app.use(bodyParser.urlencoded({extended:false}));
+
+app.use(session({
+    secret:process.env.SECRET,
+    resave:false,
+    saveUninitialized:true,
+    //cookie:{secure:false}
+}))
 //+---------------------------- MIDDLEWARE -------------------------------------//
 //!---------------------- IMPORT & ASSIGN CONTROLLERS --------------------------//
 const adminController = require("./Controllers/Admin.js");
 const generalController = require("./Controllers/General.js");
 const userController = require("./Controllers/User.js");
-// const authController = require("./Controllers/Auth.js");
+const productController = require("./Controllers/Product.js");
+const authController = require("./Controllers/Auth.js");
 //!---------------------- IMPORT & ASSIGN CONTROLLERS --------------------------//
 //?--------------------------------- ROUTES ------------------------------------//
 app.use("/",generalController);
 app.use("/admin",adminController);
 app.use("/user",userController);
+app.use("/item",productController);
 // app.use("/task", taskController);
-// app.use("/auth", authController);
+app.use("/auth", authController);
 //?--------------------------------- ROUTES ------------------------------------//
 //+------------------------------ START SERVER ----------------------------------//
 const PORT=process.env.PORT || 3000;
