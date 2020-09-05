@@ -40,7 +40,19 @@ const userModel ={
         })
         .catch((err)=>reject(err))
         })
-    }
+    },
+    getCustomerInfo(user_id)
+    {
+        return new Promise((resolve,reject)=>{
+            this.Sql = `SELECT * FROM customer where userId = ?`;
+        db.connection.query(this.Sql,[user_id])
+        .then(([rows,fields])=>{
+            resolve(rows);
+        })
+        .catch((err)=>reject(err))
+        })
+    
+    },
 
 }
 

@@ -3,6 +3,7 @@ const User = require("../Models/POJO/userPOJO.js");
 const productPOJO = require("../Models/POJO/productPOJO.js");
 const {v4: uuidv4} = require('uuid');
 const userModel = require("../Models/User.js");
+const mkdirp = require("mkdirp");
 
 exports.loginFormValidation = (req,res,next)=>{
     const user = new User();
@@ -59,12 +60,12 @@ exports.loginFormValidation = (req,res,next)=>{
             errors.email = "Email or password is incorrect";
             errors.password = "Email or password is incorrect";
 
-            res.status(400).json(errors)
+            res.status(400).json({errors:err})
         })    
 
 
       })
-      .catch(err=>console.log(`Error :failure to get user by email: ${err}`))
+      .catch(err=>console.log(`Error :failure to get user by email: ${err}`)) //! user does not exist return error
 
     }
     else// these errors is if they did not enter a password or eamail
@@ -186,7 +187,7 @@ exports.productUpload = (req,res,next) =>
     itemCont.max = req.body.max;
     itemCont.likes = 0;
     itemCont.description = req.body.description;
-    itemCont.category = req.body.category;
+    itemCont.categoryId = req.body.category;
     itemCont.imgLocation = req.files.prodImg; // user forces to upload an image at form
 
     //TODO makesure the datatype of the images are supported jpeg,jpg,png,gif
@@ -197,8 +198,30 @@ exports.productUpload = (req,res,next) =>
     {
         itemCont.imgLocation = "";
     }
-    else{
-        itemCont.descriptionDocxPath == req.files.productDocument
+    else
+    {
+        let imgFolderForProduct = uuidv4();//create a unique name for the file
+        // make directory to move images
+        const made = mkdirp.sync(`public/img/product_imgs/${imgFolderForProduct}`)
+       // res.json(req.files.prodImg[1].name.split("."))
+        for(let i=0;i<req.files.prodImg.length;i++)
+        {
+            let imgName = req.files.prodImg[i].name;
+                imgName =imgName.split(".");
+            if(imgName[1]== "png" || imgName[1] == "jpg" || imgName[1] == "jpeg" || imgName[1] == "gif" || imgName[1]== "PNG" || imgName[1] == "JPG" || imgName[1] == "JPEG" || imgName[1] == "GIF")
+            {
+                let NewImgName = uuidv4();//create a unique name for the file
+                req.files.prodImg[i].name = NewImgName+"."+imgName[1]; //+ stich the generated name and the file type together to build a new name
+                req.files.prodImg[i].mv(`public/img/product_imgs/${imgFolderForProduct}/${req.files.prodImg[i].name}`,(err)=>{
+                    // res.status(400).json({Error:`Please try again img : ${err}`});
+                });
+                itemCont.imgLocation = `img/product_imgs/${imgFolderForProduct}/`;
+            }
+            else
+            {
+                res.json({error:"Not a document"});
+            }
+        }
     }
     
     //todo cmakesure the document uploaded is a docx filetype
@@ -213,20 +236,21 @@ exports.productUpload = (req,res,next) =>
         const docDecriptionName = req.files.productDocument.name.split(".");
         if(docDecriptionName[1]== "docx" || docDecriptionName[1] == "doc")
         {
-            const NewName = uuidv4();//create a unique name for the file
+            let NewName = uuidv4();//create a unique name for the file
             req.files.productDocument.name = NewName+"."+docDecriptionName[1]; //+ stich the generated name and the file type together to build a new name
             req.files.productDocument.mv(`public/docs/${req.files.productDocument.name}`,(err)=>{
-                res.status(400).json({Error:`${err}`});
+                console.log(`move file error ${err}`);
+                //   res.status(400).json({Error:`Please try again doc err :${err}`});
             });
-
-            itemCont.descriptionDocxPath = req.files.productDocument.name;
-            req.productData = itemCont;
+            itemCont.descriptionDocxPath = `docs/${req.files.productDocument.name}`;
         }
         else
         {
-            res.json({error:"Not a document"});
+            console.log("Wrong file format for document");
+           // res.json({error:"Not a document"});
         }
     }
-    //! must remember the name of the location for both file uploades   
+    //! must remember the name of the location for both file uploades  
+    req.productData = itemCont;
     next();
 }

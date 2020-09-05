@@ -1,0 +1,83 @@
+<div id="banner" class="animated fadeInDown" style="background-image: url('../img/adminDashboard.png');">
+        <div   div id="profilePicCont">
+            <div class="animated fadeInUp delay-1s"><i class="fa fa-pencil-alt"></i></div>
+            <img class="animated fadeIn delay-1s" src="../img/DefaultProPic.png" alt="default profile Image">
+        </div>
+        <div id="proName" style="background:#ffffff;color:#215093;padding:5px;border-radius:10px;">{{adminInfo.firstName}} {{adminInfo.lastName}}<a href="#" id="adminIcon"><i class="fa fa-cog"></i></a></div>
+        <section>
+            <div id="ProductControllerButton" style="color:#D8E8FF;background: #6673AD;">Products</div>
+            <div id="CategoriesControllerButton" style="color:#D8E8FF;background: #6673AD;">Categories</div>
+        </section>
+    </div>
+    <div id="adminDashboardProducts">
+        <ul>
+            <li id="viewProductButton"><i class="fa fa-eye"></i>&nbsp;<a href="view-item">View Products</a></li>
+            <li id="addProductButton"><i class="fa fa-plus-circle"></i>&nbsp;<a href="add-item">Add Products</a></li>
+            <li id="editProductButton"><i class="fa fa-edit"></i>&nbsp;<a href="edit-item">Edit Products</a></li>
+            <li id="editProductButton"><i class="fa fa-edit"></i>&nbsp;<a href="delete-item">Delete Products</a></li>
+        </ul>
+    </div>
+    <div id="adminDashboardCategory" style="display:none">
+        <ul>
+            <li id="viewcategoryButton"><i class="fa fa-eye"></i>&nbsp;<a href="view-category">View Categories</a></li>
+            <li id="addCategoryButton"><i class="fa fa-plus-circle"></i>&nbsp;<a href="add-category">Add Category</a></li>
+            <li id="editCategoryButton"><i class="fa fa-edit"></i>&nbsp;<a href="edit-category">Edit Category</a></li>
+            <li id="editCategoryButton"><i class="fa fa-edit"></i>&nbsp;<a href="delete-category">Delete Category</a></li>
+        </ul>
+    </div>
+    <div id="viewAllProducts">
+            {{#if productData}}
+            <div id="newItemList">
+                {{#each productData}}
+                    <div class="productContainer">
+                        <div class="prodHeader">
+                            <div class="headerLeft">
+                                <i class="fa fa-thumbs-up"></i><span>{{this.likes}}</span>
+                            </div>
+                            <div class="headerRight">
+                                30% Off
+                            </div>
+                        </div>
+                        <div class="prodImgCont">
+                            <img class="prodImg" src="{{this.imgLocation}}" alt="image">
+                        </div>
+                        <div class="prodDesc">
+                            {{this.title}} &hellip;
+                            <div class="prodCategory">
+                                {{this.categoryId}}
+                            </div>
+                        </div>
+                        <div class="prodActions">
+                            <div class="watchLater">
+                                <a href="/prod/watch/{{this.productCode}}"><i class="fa fa-stopwatch"></i>&nbsp;Watch Later</a>
+                            </div>
+                            <div class="AddCart">
+                                <a href="/cart/add/{{this.productCode}}"><i class="fa fa-cart-plus"></i>&nbsp;Add to cart</a>    
+                            </div>
+                        </div>
+                        <div class="prodFooter">
+                            TT ${{this.price}}
+                        </div>
+                    </div>
+                {{/each}}
+                </div>
+            {{/if}}
+            View
+        </div>
+    <script>
+        const ProductControllerButton = document.querySelector("#ProductControllerButton");
+        const CategoriesControllerButton = document.querySelector("#CategoriesControllerButton");
+
+        const adminDashboardProducts = document.querySelector("#adminDashboardProducts");
+        const adminDashboardCategory = document.querySelector("#adminDashboardCategory");
+
+        ProductControllerButton.addEventListener("click",()=>{
+            adminDashboardCategory.style.display = "none";
+            adminDashboardProducts.style.display = "grid";
+        });
+
+        CategoriesControllerButton.addEventListener("click",()=>{
+            adminDashboardCategory.style.display = "grid";
+            adminDashboardProducts.style.display = "none";
+        });
+    </script>

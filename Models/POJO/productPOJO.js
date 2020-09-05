@@ -9,7 +9,7 @@ class Product
    costPrice;
    title;
    description;
-   category;
+   categoryId;
    descriptionDocxPath;
    imgLocation;
    likes;
