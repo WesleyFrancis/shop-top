@@ -25,10 +25,19 @@ router.get("/",(req,res)=>{
             prodId:27,
             prodPrice:"4295.97"
             }];
+            let userinfo = false;
+    if(req.session.userData)
+    {
+         userinfo = req.session.userData;
+    }
+    else{
+         userinfo = false;
+    }
     res.render("general/home",{
         title:"ShopTop | Shop till you Drop",
         categories,
         products,
+        userinfo,
         nav:true
 
         });

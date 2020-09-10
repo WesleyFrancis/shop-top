@@ -11,37 +11,62 @@
     <link rel="stylesheet" href="../css/tablet.css" media="(max-width:768px)">
     <link rel="stylesheet" href="../css/phone.css" media="(max-width:575.99px)">
     <title>{{title}}</title>
+    <style>
+        #logo::after{
+            height:0px;
+        }
+        #logo::before{
+            height:0px;
+        }
+        #logo{
+            background: none;
+        }
+    </style>
 </head>
 <body>
-    {{#if nav}}
     <header>
+        {{#if nav}}
         <nav>
             <ul id="navBarParent">
                 <li>
-                    <a href="index.html">
+                    <a href="/" id="logo">
                         <img src="../img/logo.png" alt="logo">
                     </a>
                 </li>
                 <li>
-                    <form action="search.html" methos="GET">
-                        <input type="text" name="searchQuery" id="searchQuery">
-                        <input type="submit" value="Search">
+                    <form action="search.html" methos="GET" style="box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.10);">
+                        <input type="text" name="searchQuery" id="searchQuery" placeholder="What are you looking for?">
+                        <button type="submit" name="Search" id="submitGo">
+                            <i class=" fa fa-search"></i>&nbsp;Search
+                        </button>
+                            
+                        
                     </form>
                 </li>
-                <li><a href="html/signIn.html">Sign In</a></li>
-                <li><a href="html/register.html">Join Free</a></li>
-                <li><a href="html/bestSellers.html">Best sellers</a></li>
-                <li><a href="html/cart.html">Cart</a></li>
+                <li>
+                {{#if userinfo}}
+                    <a href="/{{userinfo.role}}/dashboard"><i class="fa fa-user-circle"></i>&nbsp;Hello, {{userinfo.firstName}}</a>
+                {{else}}
+                    <a href="auth/login"><i class="fa fa-user-circle"></i>&nbsp;Hello, Sign In</a>
+                {{/if}}
+                </li>
+                <li><a href="html/bestSellers.html"><i class="fa fa-table-tennis"></i>&nbsp;Best sellers</a></li>
+                <li><a href="html/cart.html"><i class="fa fa-cart-plus"></i> &nbsp;Cart</a></li>
+                {{#if userinfo}}
+                    <li><a href="/auth/logout"><i class="fa fa-power-off"></i> &nbsp;Logout</a></li>
+                {{/if}}
             </ul>
         </nav>
+        {{/if}}
     </header>
-    {{/if}}
     <main>
         {{{body}}}
     </main>
     <footer>
-footer
+        <div >sdgsgdsgdgsg</div>
+        <div >sdgsdsdg gsdg</div>
+        <div >sdg sffsdg</div>
     </footer>
-    <script src="js/main.js" type="module"></script>
 </body>
+<script src="../js/main.js" type="module"></script>
 </html>

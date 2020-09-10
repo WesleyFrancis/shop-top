@@ -22,7 +22,9 @@ const productModel = require("../Models/Product.js");
 //     })
 //     .catch()
 // })
-
+//+------------------------------------------------------------------+
+//+                   Calculate open positions                       |
+//+------------------------------------------------------------------+
 route.get("/dashboard",isAuth,(req,res)=>{
 
     if(req.session.userData.role == "user")

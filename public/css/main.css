@@ -3,46 +3,128 @@
     margin: 0px;
     padding: 0px;
 }
+a, a:before, a:after{
+  padding:0px;
+  margin:0px;
+  border:0px;
+  text-decoration: none;
+}
+html{min-height: 100%;}
 body{
     background-color: #E3E8EE;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    height: 100%;
+    align-items: end;
+  }
+footer{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  position: relative;
+  margin-top:10px;
+  height:200px;
+  width:100%;
+  background-color:#24292E;
+  color:#fff;
+  justify-items:center;
 }
-nav{
-    box-shadow: 0px 10px 15px #aaa;
-}
+
 header{
     background-color: #ffffff;
+    
 }
 #navBarParent{
     display: grid;
-    grid-template-columns: repeat(12,1fr);
+    grid-template-columns: repeat(6,auto);
     list-style: none;
-    justify-content: center;
-    place-items:center;
-    width: 80%;
+     justify-content: stretch; 
+    place-items:center; 
     max-width: 1200px;
     margin: 0px auto;
-    grid-template-areas:
-    "a a b b b b c d e e f f";
+    color:#8993A1;
 }
-#logo{grid-area: a;}
-#search{grid-area: b;}
-#search > input{
+nav > ul >li > a{
+  padding:5px;
   position: relative;
-  width:90%;
+  transition: color 1s;
+  color:#8993A1;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-#signin{grid-area: c;}
-#register{grid-area: d;}
-#bestSellers{grid-area: e;}
-#cart{grid-area: f;}
+nav > ul > li > a:hover {
+  transition: color 1s;
+  color:#fff;
+  background:#ffaa8b;
+}
+nav >ul >li >a::after{
+  content: "";
+  background-color:#FF6F3C;
+  height:3px;
+  width:100%;
+  position: absolute;
+  bottom: -3px;
+  left:0px;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 250ms ease-in-out;
+}
+nav >ul >li >a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 250ms ease-in-out ;
+}
+/*---- Before information */
+nav >ul >li >a::before{
+  content: "";
+  background-color:#FF6F3C;
+  height:3px;
+  width:100%;
+  position: absolute;
+  top: -3px;
+  left:0px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms ease-in-out;
+}
+nav >ul >li >a:hover::before {
+  transform: scaleX(1);
+  transform-origin: right;
+  transition: transform 250ms ease-in-out ;
+}
+nav{
+  box-shadow: 0px 10px 15px #aaa;
+}
+#searchQuery{
+  width:400px;
+  height: 30px;
+  text-align: center;
+  border:none;
+}
+#searchQuery:focus{
+  border:none;
+}
+#submitGo{
+  background:#5469D4;
+  color:#fff;
+  border:none;
+  padding:5px 10px 5px 5px;
+  font-size: 1rem;
+  border-radius: 0px 30px 30px 0px;
 
+}
+#submitGo:hover{cursor: pointer;}
+
+#heroSection{
+  position: relative;
+  width:100%;
+}
 
 #heroimg{
-    width: 100%;
-    height: auto;
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin: 0px auto;
-   background-color: rgba(160, 222, 255, 0.541);
+  width: 100%;
+  height: auto;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0px auto;
+  background-color: rgba(160, 222, 255, 0.541);
 }
 #randomCategoriesLister{
     display:grid;
@@ -193,7 +275,7 @@ header{
   }
   .prodActions{
     display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: auto auto;
       place-items: center;
       padding: 10px 5px 10px 5px;
   }
@@ -405,9 +487,9 @@ header{
 }
 
 /*...RIGHT SIDE*/
-#itemDetails{
+/* #itemDetails{
  
-}
+} */
 #itemPriceWatchLater{
   display:inline-grid;
   grid-template-columns: 1fr 1fr;
@@ -660,7 +742,7 @@ margin-top:15px;
   margin:5px 0px 10px 0px;
   margin-right:10px;
 }
-.imgPrice{}
+
 .imgPrice > h6{
   text-align: center;
   color:#8993A1;
@@ -766,7 +848,7 @@ margin-top:15px;
   list-style: none;
   margin:0px auto;
 }
-#adminDashboardCategory > ul > li{
+#adminDashboardCategory > ul > li > a{
   margin:10px;
   color:#215093;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -774,10 +856,10 @@ margin-top:15px;
   position: relative;
 }
 #adminDashboardCategory > ul > li:hover{
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 #adminDashboardCategory > ul > li::after{
-  content: "";
+  /* content: "";
   background-color:#215093;
   height:3px;
   width:100%;
@@ -786,12 +868,12 @@ margin-top:15px;
   left:0px;
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 250ms ease-in-out ;
+  transition: transform 250ms ease-in-out ; */
 }
 #adminDashboardCategory > div > ul > li:hover::after{
-transform: scaleX(1);
+/* transform: scaleX(1);
 transform-origin: left;
-transition: transform 250ms ease-in-out ;
+transition: transform 250ms ease-in-out ; */
 }
 /*category*/ 
 /*PRODUCTS*/
@@ -799,7 +881,7 @@ transition: transform 250ms ease-in-out ;
   display: grid;
   grid-template-rows: auto auto;
   place-items: center;
-  margin-top:20px;
+  margin-bottom:20px;
   margin:0px auto;
   place-items: center;
 }
@@ -814,8 +896,13 @@ transition: transform 250ms ease-in-out ;
   grid-template-columns: auto auto auto auto;
   list-style: none;
   margin:0px auto;
+  color:#215093;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 700;
+  position: relative;
+  text-decoration: none;
 }
-#adminDashboardProducts > ul > li,a{
+.fancyLine{
   margin:10px;
   color:#215093;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -823,12 +910,10 @@ transition: transform 250ms ease-in-out ;
   position: relative;
   text-decoration: none;
 }
-
-
-#adminDashboardProducts > ul > li:hover{
+.fancyLine:hover{
   cursor: pointer;
 }
-#adminDashboardProducts > ul > li::after{
+.fancyLine::after{
   content: "";
   background-color:#215093;
   height:3px;
@@ -840,10 +925,28 @@ transition: transform 250ms ease-in-out ;
   transform-origin: right;
   transition: transform 250ms ease-in-out ;
 }
-#adminDashboardProducts > ul > li:hover::after{
-transform: scaleX(1);
+.fancyLine:hover::after{
+  transform: scaleX(1);
 transform-origin: left;
 transition: transform 250ms ease-in-out ;
+}
+#adminDashboardProducts > ul > li > a{
+  margin:10px;
+  color:#215093;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 700;
+  position: relative;
+}
+
+
+#adminDashboardProducts > ul > li:hover{
+  
+}
+#adminDashboardProducts > ul > li::after{
+  
+}
+#adminDashboardProducts > ul > li:hover::after{
+
 }
 /*PRODUCTS*/
 .catViewContainer{

@@ -5,6 +5,9 @@ const {loginFormValidation} = require("../middleware/validation.js");
 const {registerFormValidation} = require("../middleware/validation.js");
 const userModel = require("../Models/User.js");
 const bcrypt = require("bcryptjs");
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.get("/login",(req,res)=>{
     res.status(200).render("general/login",{
@@ -21,7 +24,7 @@ router.post("/login",loginFormValidation,(req,res)=>{
     }
     else if(req.session.userData.role == "admin")
     {
-        res.redirect("/admin/dashboard");
+        res.redirect("/admin/view-item");
     }
     
 })
@@ -44,7 +47,32 @@ router.get("/register",(req,res)=>{
             req.user.password = hash; // set the user object password to the hashed version
             userModel.addUser(req.user)
             .then(()=>{
-                res.redirect("/auth/login");
+                // using Twilio SendGrid's v3 Node.js Library
+                // https://github.com/sendgrid/sendgrid-nodejs wesley6216
+                
+                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                const msg = {
+                to: 'blender6216@hotmail.com',
+                from: 'wesley.francis@hotmail.com',
+                subject: `Hello ${req.user.firstname} Welcome to ShopTop | Your all in one online solution`,
+                text: 'and easy to do anywhere, even with Node.js',
+                html: 'Be sure to explore our catalogs',
+                };
+                (async () => { //ES* empty async arrow function with a try catch 
+                    try 
+                    {
+                      await sgMail.send(msg);
+                      res.redirect("/auth/login");
+                    } 
+                    catch (error) 
+                    {
+                      console.error(error);
+                      if (error.response) 
+                      {
+                        console.error(error.response.body)
+                      }
+                    }
+                  })();
             })
             .catch((err)=>{
                 console.log(`C|Auth| ${err}`)
