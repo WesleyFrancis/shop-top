@@ -1,0 +1,63 @@
+<div id="banner" class="animated fadeInDown" style="background-image: url('/img/adminDashboard.png');">
+    <div   div id="profilePicCont">
+        <div class="animated fadeInUp delay-1s"><i class="fa fa-pencil-alt"></i></div>
+        <img class="animated fadeIn delay-1s" src="/img/DefaultProPic.png" alt="default profile Image">
+    </div>
+    <div id="proName" style="background:#ffffff;color:#215093;padding:5px;border-radius:10px;">{{adminInfo.firstName}} {{adminInfo.lastName}}<a href="#" id="adminIcon"><i class="fa fa-cog"></i></a></div>
+    <section>
+        <div id="ProductControllerButton" style="color:#D8E8FF;background: #6673AD;">Products</div>
+        <div id="CategoriesControllerButton" style="color:#D8E8FF;background: #6673AD;">Categories</div>
+    </section>
+</div>
+<div id="adminDashboardProducts">
+    <ul>
+        <li class="fancyLine" id="viewProductButton"><i class="fa fa-eye"></i>&nbsp;<a href="view-item">View Products</a></li>
+        <li class="fancyLine" id="addProductButton"><i class="fa fa-plus-circle"></i>&nbsp;<a href="add-item">Add Products</a></li>
+        {{!-- <li class="fancyLine" id="editProductButton"><i class="fa fa-edit"></i>&nbsp;<a href="edit-item">Edit Products</a></li> --}}
+        {{!-- <li class="fancyLine" id="editProductButton"><i class="fa fa-edit"></i>&nbsp;<a href="delete-item">Delete Products</a></li> --}}
+    </ul>
+</div>
+<div id="adminDashboardCategory" style="display:none">
+    <ul>
+            <li class="fancyLine" id="viewcategoryButton"><i class="fa fa-eye"></i>&nbsp;<a href="/admin/view-category">View Categories</a></li>
+            <li class="fancyLine" id="addCategoryButton"><i class="fa fa-plus-circle"></i>&nbsp; <a href="/admin/add-category">Add Category</a></li>
+            <li class="fancyLine" id="editCategoryButton"><i class="fa fa-edit"></i>&nbsp; <a href="/admin/edit-category">Edit Category</a></li>
+            <li class="fancyLine" id="editCategoryButton"><i class="fa fa-edit"></i>&nbsp; <a href="/admin/delete-category">Delete Category</a></li>
+    </ul>
+</div>
+{{!--  --}}
+<div class="categoryHeader"> 
+    <h1><span>Categories</span></h1>
+</div>
+<div id="randomCategoriesLister">
+    {{#each category}}
+    <div class="categoryPresentation" style="display:grid;grid-template-rows:auto auto;">
+        <div>{{this.categoryName}}</div>
+        <a href="/search/category/{{this.categoryId}}">
+            <img src="/img/{{this.categoryImgPath}}" alt="{{this.categoryName}}">
+        </a>
+        <section class="catControls animated slideInDown" style="position:relative;padding:10px;">
+            <a href="/admin/edit-category/{{this.categoryId}}"><i class="fa fa-edit" style="color:darkmagenta"></i>&nbsp;Edit category</a>
+            <a href="/admin/delete-category/{{this.categoryId}}"><i class="fa fa-trash-alt" style="color:red"></i>&nbsp;Delete Category</a>
+        </section>
+    </div>
+    {{/each}}
+    
+</div>
+<script>
+    const ProductControllerButton = document.querySelector("#ProductControllerButton");
+    const CategoriesControllerButton = document.querySelector("#CategoriesControllerButton");
+
+    const adminDashboardProducts = document.querySelector("#adminDashboardProducts");
+    const adminDashboardCategory = document.querySelector("#adminDashboardCategory");
+
+    ProductControllerButton.addEventListener("click",()=>{
+        adminDashboardCategory.style.display = "none";
+        adminDashboardProducts.style.display = "grid";
+    });
+
+    CategoriesControllerButton.addEventListener("click",()=>{
+        adminDashboardCategory.style.display = "grid";
+        adminDashboardProducts.style.display = "none";
+    });
+</script>

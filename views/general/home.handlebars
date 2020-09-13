@@ -1,4 +1,4 @@
-    <div id="heroSection">
+    <div id="heroSection" class="animated fadeIn">
         <a href="auth/register">
             <img id="heroimg" src="img/Hero Section.png" alt="hero section">
         </a>
@@ -54,7 +54,7 @@
             <div class="prodActions">
                 <div class="watchLater">
                     {{#if ../userinfo}}
-                        <a href="/item/watchLater/{{../userinfo.userId}}/{{this.productCode}}"><i class="fa fa-stopwatch"></i>&nbsp;Watch Later</a>
+                        <a href="/item/watchlater/{{../userinfo.userId}}/{{this.productCode}}"><i class="fa fa-stopwatch"></i>&nbsp;Watch Later</a>
                     {{else}}
                         <a href="/auth/login/"><i class="fa fa-stopwatch"></i>&nbsp;Login to save</a>
                     {{/if}}

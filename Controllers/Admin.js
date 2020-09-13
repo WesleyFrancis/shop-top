@@ -123,7 +123,32 @@ route.post("/edit-item",(req,res)=>{
 
 })
 //-- categories
-route.get("view-categories",isAuth,adminSecure,(req,res)=>{
-    
+route.get("/view-category",isAuth,adminSecure,(req,res)=>{
+    const userinfo = req.session.userData;
+    productModel.getAllCategory()
+    .then((category)=>{
+        res.render("admin/view-category",{
+            title: "Admin | view Category",
+            nav:true,
+            category,
+            userinfo
+        })
+    })
+    .catch()
+})
+route.get("/edit-category/:id",isAuth,adminSecure,(req,res)=>{
+    const catId= req.params.id;
+    const userinfo = req.session.userData;
+    productModel.getCategoryById(catId)
+    .then((catinfo)=>{
+        category = catinfo[0];
+        res.render("admin/edit-category",{
+            title: "Admin | edit category",
+            nav:true,
+            category,
+            userinfo
+        })
+    })
+    .catch((err)=>{console.log(err)})
 })
 module.exports = route;

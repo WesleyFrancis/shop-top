@@ -27,16 +27,14 @@ const productModel = require("../Models/Product.js");
 //+------------------------------------------------------------------+
 route.get("/dashboard",isAuth,(req,res)=>{
 
-    if(req.session.userData.role == "user")
-    {
+
         //get product object array
     let watchList = null// [{daf:"asf"},{asfasf:"gdhg"}];
-    userModule.getCustomerInfo(req.session.userData.userId)
-    .then((result)=>{
-        productModel.getWatchLater(result[0].customerId)
+        const userinfo = req.session.userData;
+        productModel.getWatchLater(userinfo.userId)
         .then((resule)=>{
             watchList = resule[0];
-            const userinfo = req.session.userData;
+            
             res.render("user/userDashboard",{
                 title:"UserDashboard",
                     userinfo,
@@ -47,16 +45,7 @@ route.get("/dashboard",isAuth,(req,res)=>{
         .catch((err)=>{
             console.log(err)
         })
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
-   
-    }
-    else
-    {
-        res.redirect("/admin/dashboard");
-    }
+
 })
 
 

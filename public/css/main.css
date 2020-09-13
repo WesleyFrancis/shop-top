@@ -27,6 +27,7 @@ footer{
   background-color:#24292E;
   color:#fff;
   justify-items:center;
+  align-items: center;
 }
 
 header{
@@ -159,7 +160,6 @@ box-shadow:  10px 10px 19px #adb0b5,
 }
 .categoryPresentation:hover{
   cursor: pointer;
-  border-radius: 20%;
   perspective: 100;
   /* transform: perspective(400px) translateZ(-100px); */
   transition: transform 200ms ease-in-out;
@@ -169,6 +169,23 @@ box-shadow:  10px 10px 19px #adb0b5,
     width: 1200px;
     margin: 0px auto;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.catControls > a{
+  font-size: 1rem;
+  color:#8993A1;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.catControls > a:hover{
+  font-size: 1rem;
+  color:#c77100;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.catControls{
+  display: grid;
+  grid-template-columns: auto auto;
+}
+.categoryPresentation:hover{
+  display: grid;
 }
 .categoryHeader > h1 {
     color: #5469D4;
@@ -354,6 +371,10 @@ box-shadow:  10px 10px 19px #adb0b5,
     margin-bottom: 1rem;
     box-shadow: 4px 4px 4px rgba(85, 85, 85, 0.459);
     padding-bottom: 2rem;
+
+    border-radius: 14px;
+box-shadow:  10px 10px 19px #adb0b5, 
+             -10px -10px 19px #ffffff;
 }
 
 #loginFormContainer > img{

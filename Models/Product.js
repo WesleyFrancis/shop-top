@@ -53,12 +53,10 @@ const productModel ={
             this.SQL = `INSERT INTO watch_later (customerId,productCode)VALUES(?,?)`;
             db.connection.query(this.SQL,[userId,productId])
             .then(()=>{
-               const added = {success:true};
-                resolve(added);
+                resolve();
             })
             .catch((err)=>{
-               const added = {success:"failed to insert Watchlater"}
-                reject(err,added);
+                reject(err);
             })
         })
     },
