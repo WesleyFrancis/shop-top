@@ -4,7 +4,6 @@ class Product
    min;
    max;
    price;
-   costPrice;
    quantity;
    costPrice;
    title;

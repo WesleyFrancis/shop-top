@@ -15,10 +15,18 @@ router.put("/watchlater/:uid/:prodid",(req,res)=>{
 })
 
 router.post("/additem",productUpload,async(req,res)=>{
-   try {
-    productModel.addProduct(req.productData);
-    res.status(200).redirect("/admin/dashboard")
-   } catch (error) {
+
+ //   res.json(req.productData);
+   try 
+   {
+        productModel.addProduct(req.productData)
+        .then((rest)=>{
+            res.redirect("/admin/view-item")
+        })
+        .catch((err)=>{console.log(err)})
+   }
+   catch (error) 
+   {
        console.log(error);
    }
 })

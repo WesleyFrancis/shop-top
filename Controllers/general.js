@@ -6,41 +6,72 @@ const csvFilePath="public/csv/eurusd.csv";
 const mainCsv = require('csvtojson');
 const mkdirp = require("mkdirp");
 const { route } = require("./Product.js");
+const productMOdel = require("../Models/Product.js");
+const fs = require('fs');
+const productModel = require("../Models/Product.js");
 
-router.get("/",(req,res)=>{
-    const categories = [{name:"Electronics",img:"img/category/footware.png"},{name:"computers",img:"img/category/medical.png"}] 
-    const products =[{
-        thumbsUp:"200",
-        prodImg:"img/category/apparel.png",
-        productName:"Lorem Ipsum is simply dummy text of the printing and typesetting",
-        category:"health & beauty",
-        prodId:21,
-        prodPrice:"3078.98"
-        },
-        {
-            thumbsUp:"699",
-            prodImg:"img/category/medical.png",
-            productName:"Cherisee is the most awesome girlfriend evererererrrrrrrr",
-            category:"furniture",
-            prodId:27,
-            prodPrice:"4295.97"
-            }];
-            let userinfo = false;
-    if(req.session.userData)
+router.get("/",async(req,res)=>{
+    try 
     {
-         userinfo = req.session.userData;
-    }
-    else{
-         userinfo = false;
-    }
-    res.render("general/home",{
-        title:"ShopTop | Shop till you Drop",
-        categories,
-        products,
-        userinfo,
-        nav:true
+       const prodData= await productModel.getAllProducts();
+       const category= await productModel.getAllCategory();
 
-        });
+        //---
+   
+            
+            for(let i=0;i<prodData.length;i++)
+            {
+                if(prodData[i].categoryId != null)
+                {
+                    let catInfo = await productModel.getCategoryById(prodData[i].categoryId);
+                    prodData[i].categoryId = catInfo[0].categoryName;
+                }
+                if(prodData[i].imgLocation != null)
+                {
+                    let dir = "";
+                    dir = "public/"+prodData[i].imgLocation;// node reades the publicy documents top down server/public/img etc
+                    fs.readdir(dir,(err,files)=>{
+                        for(let j =0;j<files.length;j++)
+                        {
+                      //      console.log(files[j]);
+                        }
+                        prodData[i].imgLocation = "../"+prodData[i].imgLocation+files[0]; // images are read on pages as ../img/etc
+    
+                    })
+                }
+            }
+        //---
+
+
+        let categories=[];
+        for(let i=0;i<4;i++)
+        {
+            categories.push(category[i]);
+        }
+        let userinfo = false;
+        if(req.session.userData)
+        {
+            userinfo = req.session.userData;
+        }
+        else{
+            userinfo = false;
+        }
+        res.render("general/home",{
+            title:"ShopTop | Shop till you Drop",
+            userinfo,
+            nav:true,
+            categories,
+            prodData
+            });
+    } 
+    catch (error) 
+    {
+        console.log(error)
+    }
+
+
+
+    
    // Schalk.generalError("navigated to home route")
 })
 
@@ -62,23 +93,90 @@ router.post("/chart",(req,res)=>{
 router.get("/products/:id",(req,res)=>{
   
     const id = req.params.id;
-    mkdirp('public/docs/wesle757')//! MAKE A DIRECTORY FOR A USER. this can my a composition of firstname and userId. Wold be used to fetch the docx file for that user's docx. file./
-    .then((made)=>{
-        console.log(made);
-    })
-    mammoth.convertToHtml({path: "public/docs/userName/Privacy Policy.docx"}) //!  methong to convert the uploaded docx file to html 
-    .then(function(result){                                                   //! to be passed to the front end to be displayed to the user. in the item description/
-        const html = result.value; // The generated HTML
-        const messages = result.messages; // Any messages, such as warnings during conversion
-        const Description = html;
-      //  res.send(Description);
-        res.render("user/productPage",{
-            title:"product Page",
-            id,
-            Description
-        });
-    })
-    .done();
+
+    if(id)
+    {
+        productMOdel.getProductById(id)
+        .then((item)=>{
+            if(item[0].descriptionDocxPath.length == 0)
+            {
+                const prodData = item[0];
+                productMOdel.getCategoryById(prodData.categoryId)
+                .then((category)=>{
+                    //! to be passed to the front end to be displayed to the user. in the item description
+                    let imgArray = [];
+                    let dir = "";
+                    dir = "public/"+prodData.imgLocation;// node reades the publicy documents top down server/public/img etc
+                    fs.readdir(dir,(err,files)=>{
+                        imgArray = files;
+                        const imgGal = {
+                            dirLocation: prodData.imgLocation,
+                            images:files
+                        }
+                        const userinfo = req.session.userData;
+                          // images are read on pages as ../img/etc
+                          prodData.category = category[0].categoryName;
+                          res.render("user/productPage",{
+                              title:`${item[0].title}`,
+                              nav:true,
+                              prodData,
+                              imgGal,
+                              userinfo
+                          });
+                    })
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+            }
+            else
+            {
+               
+                const prodData = item[0];
+                productMOdel.getCategoryById(prodData.categoryId)
+                .then((category)=>{
+                    //! to be passed to the front end to be displayed to the user. in the item description
+                    let imgArray = [];
+                    let dir = "";
+                    dir = "public/"+prodData.imgLocation;// node reades the publicy documents top down server/public/img etc
+                    fs.readdir(dir,(err,files)=>{
+                        imgArray = files;
+                        const imgGal = {
+                            dirLocation: prodData.imgLocation,
+                            images:files
+                        }
+                        const userinfo = req.session.userData;
+                          // images are read on pages as ../img/etc
+                          prodData.category = category[0].categoryName;
+                        mammoth.convertToHtml({path: `public/${item[0].descriptionDocxPath}`}) //!  methong to convert the uploaded docx file to html 
+                        .then(function(result){                                                   //! to be passed to the front end to be displayed to the user. in the item description/
+                            const html = result.value; // The generated HTML
+                            const messages = result.messages; // Any messages, such as warnings during conversion
+                            const Description = html;
+                            res.render("user/productPage",{
+                                title:`${item[0].title}`,
+                                nav:true,
+                                prodData,
+                                imgGal,
+                                userinfo,
+                                Description
+                            });
+                        })
+                        .done();
+                    })
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+            }
+        })
+        .catch((err)=>{console.log(err)})
+    }
+    // mkdirp('public/docs/wesle757')//! MAKE A DIRECTORY FOR A USER. this can my a composition of firstname and userId. Wold be used to fetch the docx file for that user's docx. file./
+    // .then((made)=>{
+    //     console.log(made);
+    // })
+    
     
 })
 

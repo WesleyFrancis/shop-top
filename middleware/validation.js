@@ -4,6 +4,7 @@ const productPOJO = require("../Models/POJO/productPOJO.js");
 const {v4: uuidv4} = require('uuid');
 const userModel = require("../Models/User.js");
 const mkdirp = require("mkdirp");
+const fs = require("fs");
 
 exports.loginFormValidation = (req,res,next)=>{
     const user = new User();
@@ -52,28 +53,51 @@ exports.loginFormValidation = (req,res,next)=>{
         // res.send(userInformation[0].password)
         bcrypt.compare(req.body.password,userInformation[0].password)
         .then((val)=>{
-            userInformation[0].password ="";
-            req.userData = userInformation[0];
-           next();
+            if(val)
+            {
+                userInformation[0].password ="";
+                req.userData = userInformation[0];
+                next();
+            }
+            else
+            {
+                const errors = {
+                    email:"Email / password not correct",
+                    password:"Email / password not correct"
+                };
+                res.render("general/login",{
+                    errors
+                })
+            }
         })
         .catch((err)=>{
             errors.email = "Email or password is incorrect";
             errors.password = "Email or password is incorrect";
 
-            res.status(400).json({errors:err})
+            res.status(400.).render("general/login",{
+                errors
+            })
         })    
 
 
       })
-      .catch(err=>console.log(`Error :failure to get user by email: ${err}`)) //! user does not exist return error
+      .catch((err)=>{
+        errors.email = "User Dosent Exist";
+        errors.password = "";
+          res.status(400).render("general/login",{
+            title:"login",
+            errors
+          })
+      }) //! user does not exist return error
 
     }
     else// these errors is if they did not enter a password or eamail
     {
-        res.status(400).json({
+        res.status(400.).render("general/login",{
             errors
         })
     }
+
 };
 
 exports.registerFormValidation = (req,res,next)=>
@@ -178,7 +202,7 @@ exports.registerFormValidation = (req,res,next)=>
 
 exports.productUpload = (req,res,next) =>
 {
-    const itemCont = new productPOJO();
+    let itemCont = new productPOJO();
     itemCont.title = req.body.title;
     itemCont.quantity = req.body.quantity;
     itemCont.price = req.body.price;
@@ -189,41 +213,84 @@ exports.productUpload = (req,res,next) =>
     itemCont.description = req.body.description;
     itemCont.categoryId = req.body.category;
     itemCont.imgLocation = req.files.prodImg; // user forces to upload an image at form
+    itemCont.descriptionDocxPath = "";
+ //   res.json(itemCont);
 
     //TODO makesure the datatype of the images are supported jpeg,jpg,png,gif
     //todo change the name of the all the images that are uploaded
     //todo create a directory for the images and move them to that location
     //* ------------- IMAGES ------------------
-    if(req.files.prodImg == null)
-    {
-        itemCont.imgLocation = "";
-    }
-    else
-    {
+ 
         let imgFolderForProduct = uuidv4();//create a unique name for the file
         // make directory to move images
-        const made = mkdirp.sync(`public/img/product_imgs/${imgFolderForProduct}`)
-       // res.json(req.files.prodImg[1].name.split("."))
-        for(let i=0;i<req.files.prodImg.length;i++)
+        mkdirp(`public/img/product_imgs/${imgFolderForProduct}`)
+        .then((made)=>{
+            1
+
+const myFile = (Array.isArray(req.files.prodImg)?req.files.prodImg:[req.files.prodImg]).filter(e=>e);
+    // filter is important, so that you have [] instead of [undefined] if req.files.file is undefined
+         //!Makesure the folder is made before trying to upload into it
+       console.log(req.files.prodImg.length);
+
+        if(myFile.length == 1)
         {
-            let imgName = req.files.prodImg[i].name;
+            let imgName = req.files.prodImg.name;
                 imgName =imgName.split(".");
             if(imgName[1]== "png" || imgName[1] == "jpg" || imgName[1] == "jpeg" || imgName[1] == "gif" || imgName[1]== "PNG" || imgName[1] == "JPG" || imgName[1] == "JPEG" || imgName[1] == "GIF")
             {
                 let NewImgName = uuidv4();//create a unique name for the file
-                req.files.prodImg[i].name = NewImgName+"."+imgName[1]; //+ stich the generated name and the file type together to build a new name
-                req.files.prodImg[i].mv(`public/img/product_imgs/${imgFolderForProduct}/${req.files.prodImg[i].name}`,(err)=>{
-                    // res.status(400).json({Error:`Please try again img : ${err}`});
-                });
-                itemCont.imgLocation = `img/product_imgs/${imgFolderForProduct}/`;
+                req.files.prodImg.name = NewImgName+"."+imgName[1]; //+ stich the generated name and the file type together to build a new name
+        
+                    req.files.prodImg.mv(`public/img/product_imgs/${imgFolderForProduct}/${req.files.prodImg.name}`,(err)=>{
+                        if(err)
+                        {
+                            console.log({Error:`MOVe img file error : ${err}`});
+                        }
+                        
+                    });
+                    itemCont.imgLocation = `img/product_imgs/${imgFolderForProduct}/`;
+            
             }
             else
             {
-                res.json({error:"Not a document"});
+                res.json({error:"Not an image"});
             }
         }
-    }
-    
+        else
+        {
+
+            for(let i=0;i<req.files.prodImg.length;i++)
+            {
+                let imgName = req.files.prodImg[i].name;
+                    imgName =imgName.split(".");
+                if(imgName[1]== "png" || imgName[1] == "jpg" || imgName[1] == "jpeg" || imgName[1] == "gif" || imgName[1]== "PNG" || imgName[1] == "JPG" || imgName[1] == "JPEG" || imgName[1] == "GIF")
+                {
+                    let NewImgName = uuidv4();//create a unique name for the file
+                    req.files.prodImg[i].name = NewImgName+"."+imgName[1]; //+ stich the generated name and the file type together to build a new name
+            
+                        console.log("path exists")
+                        req.files.prodImg[i].mv(`public/img/product_imgs/${imgFolderForProduct}/${req.files.prodImg[i].name}`,(err)=>{
+                            if(err)
+                            {
+                                console.log({Error:`MOVe img file error : ${err}`});
+                            }
+                            
+                        });
+                        itemCont.imgLocation = `img/product_imgs/${imgFolderForProduct}/`;
+                }
+                else
+                {
+                    res.json({error:"Not an image"});
+                }
+            }
+        }
+
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+       
+        itemCont.imgLocation = `img/product_imgs/${imgFolderForProduct}/`;
     //todo cmakesure the document uploaded is a docx filetype
     //todo makesure rename the document and move it to a location
     //* ------------- DOCX ------------------
@@ -239,7 +306,7 @@ exports.productUpload = (req,res,next) =>
             let NewName = uuidv4();//create a unique name for the file
             req.files.productDocument.name = NewName+"."+docDecriptionName[1]; //+ stich the generated name and the file type together to build a new name
             req.files.productDocument.mv(`public/docs/${req.files.productDocument.name}`,(err)=>{
-                console.log(`move file error ${err}`);
+                console.log(`move DOC file error ${err}`);
                 //   res.status(400).json({Error:`Please try again doc err :${err}`});
             });
             itemCont.descriptionDocxPath = `docs/${req.files.productDocument.name}`;

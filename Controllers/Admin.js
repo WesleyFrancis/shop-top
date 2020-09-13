@@ -8,51 +8,9 @@ const productModel = require("../Models/Product.js");
 const {isAuth} = require("../middleware/auth.js");
 const {adminSecure} = require("../middleware/auth.js");
 
-
-// route.get("/dashboard/",isAuth,adminSecure,async(req,res)=>{ //isAuth
-//     const displayMessage=false;
-//     try {
-//         const categoryData = await productModel.getAllCategory();
-//         const productData = await productModel.getAllProducts();
-//         const adminInfo = req.session.userData;
-        
-//         for(let i=0;i<productData.length;i++)
-//         {
-//             if(productData[i].categoryId != null)
-//             {
-//                 let catInfo = await productModel.getCategoryById(productData[i].categoryId);
-//                 productData[i].categoryId = catInfo[0].categoryName;
-//             }
-//             if(productData[i].imgLocation != null)
-//             {
-//                 let dir = "";
-//                 dir = "public/"+productData[i].imgLocation;// node reades the publicy documents top down server/public/img etc
-//                 fs.readdir(dir,(err,files)=>{
-//                     for(let j =0;j<files.length;j++)
-//                     {
-//                   //      console.log(files[j]);
-//                     }
-//                     productData[i].imgLocation = "../"+productData[i].imgLocation+files[0]; // images are read on pages as ../img/etc
-//                    // console.log(productData[i].imgLocation);
-//                 })
-//             }
-//         }
-//         const userinfo = req.session.userData;
-//         res.render("admin/adminDashboard",{
-//             title:"Admin Dashboard",
-//             adminInfo,
-//             categoryData,
-//             userinfo,
-//             productData,
-//             nav:true
-//         });
-//     } catch (error) 
-//     {
-//         console.log(error)
-//     }
-
-    
-// });
+route.get("/dashboard",(req,res)=>{
+    res.redirect("/admin/view-item");
+})
 
 route.get("/view-item",isAuth,adminSecure,async(req,res)=>{
     const displayMessage=false;
@@ -104,13 +62,11 @@ route.get("/add-item",isAuth,adminSecure, async(req,res)=>{
     const displayMessage=false;
     try {
         const categoryData = await productModel.getAllCategory();
-        const adminInfo = req.session.userData;
-    
+        const userinfo = req.session.userData;
         res.render("admin/add-item",{
             title:"Admin Dashboard",
-            adminInfo,
             categoryData,
-            
+            userinfo,
             nav:true
         })
     }
@@ -124,16 +80,50 @@ route.post("/add-item",(req,res)=>{
 
 })
 
-route.get("/delete-item",(req,res)=>{
+route.get("/delete-item/:id",async(req,res)=>{
 
+    try {
+       const prodData =  await productModel.getProductById(req.params.id)
+        const prodImgLoc = prodData[0].imgLocation;
+        const dir = `public/${prodImgLoc}`;
+        console.log(dir);
+        const d = await productModel.deleteProductById(req.params.id)
+        fs.rmdir(dir, { recursive: true }, (err) => {
+            if (err) {
+                throw err;
+            }
+            res.redirect("/admin/view-item");
+        });
+        
+    } 
+    catch (error) {
+        console.log(error);
+    }
 })
 route.post("/delete-item",(req,res)=>{
 
 })
-route.get("/edit-item",(req,res)=>{
+route.get("/edit-item/:id",isAuth,adminSecure,(req,res)=>{
+    const userinfo = req.session.userData;
 
+    productModel.getProductById(req.params.id)
+    .then((info)=>{
+        const productData = info[0];
+        res.render("admin/edit-item",{
+            productData,
+            userinfo,
+            nav:true
+        })
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
 })
 route.post("/edit-item",(req,res)=>{
 
+})
+//-- categories
+route.get("view-categories",isAuth,adminSecure,(req,res)=>{
+    
 })
 module.exports = route;

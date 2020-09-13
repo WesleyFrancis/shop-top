@@ -11,18 +11,18 @@
     </div>
     <div id="adminDashboardProducts">
         <ul>
-            <li class="fancyLine" id="viewProductButton"><i class="fa fa-eye"></i>&nbsp;<a href="view-item">View Products</a></li>
-            <li class="fancyLine" id="addProductButton"><i class="fa fa-plus-circle"></i>&nbsp;<a href="add-item">Add Products</a></li>
-            <li class="fancyLine" id="editProductButton"><i class="fa fa-edit"></i>&nbsp;<a href="edit-item">Edit Products</a></li>
-            <li class="fancyLine" id="editProductButton"><i class="fa fa-edit"></i>&nbsp;<a href="delete-item">Delete Products</a></li>
+            <li class="fancyLine" id="viewProductButton"><i class="fa fa-eye"></i>&nbsp;<a href="/admin/view-item">View Products</a></li>
+            <li class="fancyLine" id="addProductButton"><i class="fa fa-plus-circle"></i>&nbsp;<a href="/admin/add-item">Add Products</a></li>
+            {{!-- <li class="fancyLine" id="editProductButton"><i class="fa fa-edit"></i>&nbsp;<a href="edit-item">Edit Products</a></li> --}}
+            {{!-- <li class="fancyLine" id="editProductButton"><i class="fa fa-edit"></i>&nbsp;<a href="/admin/delete-item">Delete Products</a></li> --}}
         </ul>
     </div>
     <div id="adminDashboardCategory" style="display:none">
         <ul>
-            <li class="fancyLine" id="viewcategoryButton"><i class="fa fa-eye"></i>&nbsp;<a href="">View Categories</a></li>
-            <li class="fancyLine" id="addCategoryButton"><i class="fa fa-plus-circle"></i>&nbsp; <a href="">Add Category</a></li>
-            <li class="fancyLine" id="editCategoryButton"><i class="fa fa-edit"></i>&nbsp; <a href="">Edit Category</a></li>
-            <li class="fancyLine" id="editCategoryButton"><i class="fa fa-edit"></i>&nbsp; <a href="">Delete Category</a></li>
+            <li class="fancyLine" id="viewcategoryButton"><i class="fa fa-eye"></i>&nbsp;<a href="/admin/view-category">View Categories</a></li>
+            <li class="fancyLine" id="addCategoryButton"><i class="fa fa-plus-circle"></i>&nbsp; <a href="/admin/add-category">Add Category</a></li>
+            <li class="fancyLine" id="editCategoryButton"><i class="fa fa-edit"></i>&nbsp; <a href="/admin/edit-category">Edit Category</a></li>
+            <li class="fancyLine" id="editCategoryButton"><i class="fa fa-edit"></i>&nbsp; <a href="/admin/delete-category">Delete Category</a></li>
         </ul>
     </div>
     <div id="viewAllProducts">
@@ -32,14 +32,14 @@
                     <div class="productContainer">
                         <div class="prodHeader">
                             <div class="headerLeft">
-                                <i class="fa fa-thumbs-up"></i><span>{{this.likes}}</span>
+                                <i class="fa fa-thumbs-up"></i>&nbsp;<span>{{this.likes}}</span>
                             </div>
-                            <div class="headerRight">
-                                30% Off
+                            <div class="">
+                                
                             </div>
                         </div>
                         <div class="prodImgCont">
-                            <img class="prodImg" src="{{this.imgLocation}}" alt="image">
+                            <a href="/products/{{this.productCode}}"><img class="prodImg" src="{{this.imgLocation}}" alt="image"></a>
                         </div>
                         <div class="prodDesc">
                             {{this.title}} &hellip;
@@ -48,11 +48,12 @@
                             </div>
                         </div>
                         <div class="prodActions">
-                            <div class="watchLater">
-                                <a href="/prod/watch/{{this.productCode}}"><i class="fa fa-stopwatch"></i>&nbsp;Watch Later</a>
-                            </div>
                             <div class="AddCart">
-                                <a href="/cart/add/{{this.productCode}}"><i class="fa fa-cart-plus"></i>&nbsp;Add to cart</a>    
+                                <i class="fa fa-edit" style="color:darkmagenta"></i>&nbsp;<a href="/admin/edit-item/{{this.productCode}}">Edit Item</a>
+                            </div>
+                      
+                            <div class="AddCart">
+                                <a href="/admin/delete-item/{{this.productCode}}"><i class="fa fa-trash-alt" style="color:red"></i>&nbsp;Remove Item</a>    
                             </div>
                         </div>
                         <div class="prodFooter">

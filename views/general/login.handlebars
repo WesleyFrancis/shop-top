@@ -7,10 +7,16 @@
         <div class="formContainer">
             <label for="email">Email</label><br/>
             <input class="forminput" type="email" name="email" id="email">
+            {{#if errors}}
+            <div class="error">{{errors.email}}</div>
+            {{/if}}
         </div>
         <div class="formContainer">
             <label for="password">Password</label><br/>
             <input class="forminput" type="password" name="password" id="password">
+            {{#if errors}}
+            <div class="error">{{errors.password}}</div>
+            {{/if}}
         </div>
         <div class="submitContainer">
             <input type="submit" name="submit" id="submit" value="Continue">

@@ -1,18 +1,15 @@
+{{#if prodData}}
 <div id="productInfoCont">
             <div id="itemgallery">
-                <div>VideoGames > Accessories > Mice {{id}}</div>
+                <div style="margin-bottom:20px;">{{prodData.category}}</div>
                 <div id="BigImage">
-                    <img src="../img/category/sports.png" alt="">
+                    <img id="bigScreen" src="/{{imgGal.dirLocation}}{{imgGal.images.[0]}}" alt="">
                 </div>
                 <div id="imgThumbList">
                     <ul>
-                        <li><img class="imgThumb" src="../img/category/apparel.png" alt=""></li>
-                        <li><img class="imgThumb" src="../img/category/cosmetics.png" alt=""></li>
-                        <li><img class="imgThumb" src="../img/category/footware.png" alt=""></li>
-                        <li><img class="imgThumb" src="../img/category/medical.png" alt=""></li>
-                        <li><img class="imgThumb" src="../img/category/sports.png" alt=""></li>
-                        <li><img class="imgThumb" src="../img/category/cosmetics.png" alt=""></li>
-                        <li><img class="imgThumb" src="../img/category/footware.png" alt=""></li>
+                        {{#each imgGal.images}}
+                            <li><img class="imgThumb" src="/{{../imgGal.dirLocation}}{{this}}" alt=""></li>
+                        {{/each}}
                     </ul>
                 </div>
             </div>
@@ -21,16 +18,21 @@
                     ★★★★★
                 </div>
                 <div id="itemPriceWatchLater">
-                    <div id="price">TTD $10.93</div>
-                    <div id="watchLater"><a href="watchlater">Watch Later</a></div>
+                    <div id="price">TTD ${{prodData.price}}</div>
+                        <div id="watchLater"><a href="/prod/watch/{{prodData.productCode}}"><i class="fa fa-bookmark"></i>&nbsp;Watch Later</a></div>
                 </div>
                 <div id="ProductName">
-                    The name of th product
+                    {{prodData.title}}
                 </div>
                 <div id="itemDescription">
                     {{!-- Size 28-46 Unisex Sneakers Swimming Shoes Quick-Drying Aqua Shoes
                     and children Water Shoes zapatos de mujer for Beach Men shoes --}}
-                    {{{Description}}}
+                    {{prodData.description}}
+                    <hr>
+                    {{#if Description}}
+                        {{{Description}}}
+                    {{/if}}
+                    
                 </div>
                 <div id="color">
 
@@ -43,12 +45,34 @@
                 </div>
                 
                 <div id="callToAction">
-                    <div id="addtoCart" class="blueGrd prodAction">
-                        Add to Cart
+                    <div id="addtoCart" class="blueGrd prodAction"> {{!-- style="border-radius: 73px; background: linear-gradient(145deg, #ccd1d6, #f3f8ff);box-shadow:  10px 10px 19px #adb0b5,-10px -10px 19px #ffffff;color:royalblue" --}}
+                        <i class="fa fa-cart-plus"></i>&nbsp; Add to Cart
                     </div>
-                    <div id="buyNow" class="orangeGrd prodAction">
-                        Buy Now
+                    <div id="buyNow" class="orangeGrd prodAction"> {{!-- style="border-radius: 73px;background: linear-gradient(145deg, #ccd1d6, #f3f8ff);box-shadow:  10px 10px 19px #adb0b5,-10px -10px 19px #ffffff; color:tomato" --}}
+                        <i class="fa fa-bookmark"></i>Buy Now
                     </div>
                 </div>
             </div>
         </div>
+        {{/if}}
+
+        <script>
+                const BigImage = document.querySelector("#BigImage");
+                const imgThumbList = document.querySelector("#imgThumbList > ul");
+                const bigScreen = document.querySelector("#bigScreen");
+    
+
+                imgThumbList.addEventListener("click",(e)=>{
+                    console.log(e.target.src);
+                    if(bigScreen)
+                    {
+                        bigScreen.remove();
+                    }
+                    let loc = e.target.src;
+                    if(loc.length > 0)
+                    {
+                         BigImage.style.backgroundImage=`url('${e.target.src}')`;//"src",e.target.src)
+                    }
+                   
+                })
+        </script>

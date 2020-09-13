@@ -11,29 +11,11 @@
     <h1><span>Categories</span></h1>
 </div>
 <div id="randomCategoriesLister">
-    <div class="categoryPresentation">
-        <div>footware</div>
-        <a href="html/categoryResult.html">
-            <img src="img/category/footware.png" alt="sports">
-        </a>
-    </div>
-    <div class="categoryPresentation">
-        <div>cosmetics</div>
-        <a href="html/categoryResult.html">
-            <img src="img/category/cosmetics.png" alt="sports">
-        </a>
-    </div>
-    <div class="categoryPresentation">
-        <div>medical</div>
-        <a href="html/categoryResult.html">
-            <img src="img/category/medical.png" alt="sports">
-        </a>
-    </div>
     {{#each categories}}
     <div class="categoryPresentation">
-        <div>{{this.name}}</div>
-        <a href="html/categoryResult.html">
-            <img src="{{this.img}}" alt="sports">
+        <div>{{this.categoryName}}</div>
+        <a href="/search/category/{{this.categoryId}}">
+            <img src="/img/{{this.categoryImgPath}}" alt="{{this.categoryName}}">
         </a>
         
     </div>
@@ -47,133 +29,48 @@
     <h1><span>New Additions</span></h1>
 </div>
 <div id="newItemList">
-    <div class="productContainer">
-        <div class="prodHeader">
-            <div class="headerLeft">
-                <i class="fa fa-thumbs-up"></i><span>100</span>
+    {{#if prodData}}
+        {{#each prodData}}
+            <div class="productContainer">
+            <div class="prodHeader">
+                <div class="headerLeft">
+                    <i class="fa fa-thumbs-up"></i>&nbsp;<span>{{this.likes}}</span>
+                </div>
+                <div class="headerRight">
+                    Best Seller
+                </div>
             </div>
-            <div class="headerRight">
-                30% Off
+            <div class="prodImgCont">
+                <a href="/products/{{this.productCode}}">
+                    <img class="prodImg" src="{{this.imgLocation}}" alt="image">
+                </a>
             </div>
-        </div>
-        <div class="prodImgCont">
-            <img class="prodImg" src="img/category/sports.png" alt="image">
-        </div>
-        <div class="prodDesc">
-            Waterproof Sport Smart Watch
-            Monitor for iOS & Android &hellip;
-            <div class="prodCategory">
-                Smart Watches
+            <div class="prodDesc">
+                {{this.description}} &hellip;
+                <div class="prodCategory">
+                    {{this.categoryId}}
+                </div>
             </div>
-        </div>
-        <div class="prodActions">
-            <div class="watchLater">
-                <a href="watchLater"><i class="fa fa-stopwatch"></i>&nbsp;Watch Later</a>
+            <div class="prodActions">
+                <div class="watchLater">
+                    {{#if ../userinfo}}
+                        <a href="/item/watchLater/{{../userinfo.userId}}/{{this.productCode}}"><i class="fa fa-stopwatch"></i>&nbsp;Watch Later</a>
+                    {{else}}
+                        <a href="/auth/login/"><i class="fa fa-stopwatch"></i>&nbsp;Login to save</a>
+                    {{/if}}
+                </div>
+                <div class="AddCart">
+                    <a href="/cart/add/{{this.productCode}}"><i class="fa fa-cart-plus"></i>&nbsp;Add to cart</a>    
+                </div>
             </div>
-            <div class="AddCart">
-                <a href=""><i class="fa fa-cart-plus"></i>&nbsp;Add to cart</a>    
-            </div>
-        </div>
-        <div class="prodFooter">
-            TT $300.00
-        </div>
-    </div>
-
-    <div class="productContainer">
-        <div class="prodHeader">
-            <div class="headerLeft">
-                <i class="fa fa-thumbs-up"></i><span>100</span>
-            </div>
-            <div class="headerRight">
-                30% Off
+            <div class="prodFooter">
+                TT $300.00
             </div>
         </div>
-        <div class="prodImgCont">
-            <img class="prodImg" src="img/category/sports.png" alt="image">
-        </div>
-        <div class="prodDesc">
-            Waterproof Sport Smart Watch
-            Monitor for iOS & Android &hellip;
-            <div class="prodCategory">
-                Smart Watches
-            </div>
-        </div>
-        <div class="prodActions">
-            <div class="watchLater">
-                <a href="watchLater"><i class="fa fa-stopwatch"></i>&nbsp;Watch Later</a>
-            </div>
-            <div class="AddCart">
-                <a href=""><i class="fa fa-cart-plus"></i>&nbsp;Add to cart</a>    
-            </div>
-        </div>
-        <div class="prodFooter">
-            TT $300.00
-        </div>
-    </div>
-
-    <div class="productContainer">
-        <div class="prodHeader">
-            <div class="headerLeft">
-                <i class="fa fa-thumbs-up"></i><span>100</span>
-            </div>
-            <div class="headerRight">
-                30% Off
-            </div>
-        </div>
-        <div class="prodImgCont">
-            <img class="prodImg" src="img/category/sports.png" alt="image">
-        </div>
-        <div class="prodDesc">
-            Waterproof Sport Smart Watch
-            Monitor for iOS & Android &hellip;
-            <div class="prodCategory">
-                Smart Watches
-            </div>
-        </div>
-        <div class="prodActions">
-            <div class="watchLater">
-                <a href="watchLater"><i class="fa fa-stopwatch"></i>&nbsp;Watch Later</a>
-            </div>
-            <div class="AddCart">
-                <a href=""><i class="fa fa-cart-plus"></i>&nbsp;Add to cart</a>    
-            </div>
-        </div>
-        <div class="prodFooter">
-            TT $300.00
-        </div>
-    </div>
-
-    <div class="productContainer">
-        <div class="prodHeader">
-            <div class="headerLeft">
-                <i class="fa fa-thumbs-up"></i><span>100</span>
-            </div>
-            <div class="headerRight">
-                30% Off
-            </div>
-        </div>
-        <div class="prodImgCont">
-            <img class="prodImg" src="img/category/sports.png" alt="image">
-        </div>
-        <div class="prodDesc">
-            Waterproof Sport Smart Watch
-            Monitor for iOS & Android &hellip;
-            <div class="prodCategory">
-                Smart Watches
-            </div>
-        </div>
-        <div class="prodActions">
-            <div class="watchLater">
-                <a href="watchLater"><i class="fa fa-stopwatch"></i>&nbsp;Watch Later</a>
-            </div>
-            <div class="AddCart">
-                <a href=""><i class="fa fa-cart-plus"></i>&nbsp;Add to cart</a>    
-            </div>
-        </div>
-        <div class="prodFooter">
-            TT $300.00
-        </div>
-    </div>
+        {{/each}}
+    {{else}}
+        nothing
+    {{/if}}
     {{#each products}}
     <div class="productContainer">
         <div class="prodHeader">
