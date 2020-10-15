@@ -1,0 +1,353 @@
+<div id="checkoutPage">
+    <div id="orderInformation">
+        hey i'm other information that the cx need
+    </div>
+    <form action="#" class="panel-body" method="POST" id="checkout-form">
+        <div class="panel-heading">
+            <h3 class="panel-title">Credit Card Payment</h3>
+        </div>
+        <div>
+            <label for="cardholder-name">Name on Card</label>
+            <input style="background-color: none;" type="text" class="form-control" id="cardholder-name" placeholder="Full Name" value="{{userinfo.firstName}} {{userinfo.lastName}}">
+            <span class="helper-text"></span>
+        </div>
+        <!--Hosted Field for CC number-->
+        <div class="form-group col-md-12">
+            <label for="card-number">Card Number</label>
+            <div class="input-group" id="cardInfocnn">
+                <div class="form-control" id="card-number" data-bluesnap="ccn"></div>
+                <div id="card-logo" class="input-group-addon"><img src="https://files.readme.io/d1a25b4-generic-card.png" height="20px"></div>
+            </div>
+            <span class="helper-text" id="ccn-help"></span>
+        </div>
+        <div id="cardDataFields">
+            <!--Hosted Field for CC EXP-->
+            <div class="form-group col-xs-7">
+                <label for="exp-date">Exp. Date</label>
+                <div class="form-control" id="exp-date" data-bluesnap="exp"></div>
+                <span class="helper-text" id="exp-help"></span>
+            </div>
+            <!--Hosted Field for CC CVV-->
+            <div class="form-group col-xs-5">
+                <label for="cvv">Security Code</label>
+                <div class="form-control" id="cvv" data-bluesnap="cvv"></div>
+                <span class="helper-text" id='cvv-help'></span>
+            </div>
+        </div>
+        <div>
+            <label for="saveCardinfo">Save credit card for later &nbsp;</label>
+            <input type="checkbox" name="saveCardinfo" id="saveCardinfo checked">
+        </div>
+    <button class="subbmitBtn" type="button" id="submit-button" onclick="do_when_clicking_submit_button()">Pay Now</button>
+    </form>
+    <div id="toek" style="display: none;">{{token}}</div>
+    <div id="total" style="display: none;">{{orderTotal}}</div>
+</div>
+
+<script type="text/javascript" src="https://sandbox.bluesnap.com/web-sdk/4/bluesnap.js"></script>
+<script>
+    let tokenId = document.querySelector("#toek").innerHTML;
+    let toatl = document.querySelector("#total").innerHTML;
+    localStorage.setItem("TokId", `${tokenId}`);
+    const cardUrl = {
+  "AMEX": "https://files.readme.io/97e7acc-Amex.png", 
+  "DINERS": "https://files.readme.io/8c73810-Diners_Club.png",
+  "DISCOVER": "https://files.readme.io/caea86d-Discover.png",
+  "JCB": "https://files.readme.io/e076aed-JCB.png",
+  "MASTERCARD": "https://files.readme.io/5b7b3de-Mastercard.png",
+  "VISA": "https://files.readme.io/9018c4f-Visa.png"
+}; 
+
+//-- function to store shopper and return information
+function getBlueSnapData(tokenId)
+{
+    
+
+    let code = 'QVBJXzE0NDQ2NTAyMDMxNDQ5NDA0MjIzNjU6QkxVRTEyMw==';
+const headers = {
+    'Content-Type': 'application/json',
+    'Accept':'application/json',
+    'Authorization': `Basic ${code}`,
+    'Access-Control-Allow-Origin':'*'
+  }
+}
+//--
+    var bsObj = {
+        token: `${tokenId}`,
+        onFieldEventHandler: {
+            /*OPTIONAL*/ setupComplete: function () {
+                console.warn("setupComplete");
+            },
+            /*OPTIONAL*/threeDsChallengeExecuted: function () {
+                console.warn("threeDsChallengeExecuted");
+            },
+            // tagId returns: "ccn", "cvv", "exp" 
+            onFocus: function (tagId) { }, // Handle focus
+            onBlur: function (tagId) { }, // Handle blur 
+            onError: function (tagId, errorCode /*, errorDescription*/) { }, // Handle a change in validation
+            /*errorCode returns:
+                "10" --> invalidCcNumber, invalidExpDate, invalidCvv Dependent on the tagId;
+                "22013" --> "CC type is not supported by the merchant"; 
+                "14040" --> " Token is expired";
+                "14041" --> " Could not find token";
+                "14042" --> " Token is not associated with a payment method, please verify your client integration or contact BlueSnap support";
+                "400" --> "Session expired please refresh page to continue";
+                "403", "404", "500" --> "Internal server error please try again later"; 
+            */
+
+            /* errorDescription is optional. Returns BlueSnap's standard error description */
+
+            onType: function (tagId, cardType , cardData) {
+                /* cardType will give card type, and only applies to ccn: AMEX, VISA, MASTERCARD, AMEX, DISCOVER, DINERS, JCB */
+                if (null != cardData) {
+                    /* cardData is an optional parameter which will provide ccType, last4Digits, issuingCountry, isRegulatedCard, cardSubType, binCategory and ccBin details (only applies to ccn) in a JsonObject */
+                    console.log(cardData);
+                    document.querySelector("#card-logo > img").setAttribute("src",cardUrl[cardType]);
+                    
+                }
+                /* let help = document.querySelector(`#${tagId}-help`);
+                    help.setAttribute("class", "helper-text-green");
+                    help.innerHTML = JSON.stringify(cardData); */
+            },
+
+            onValid: function (tagId) { }, // Handle a change in validation
+        },
+        style: {
+            ":focus": {
+                //style for all input elements on focus event
+                "color": "orange"
+            },
+            "input": {
+                //style for all input elements 
+                "color": "blue"
+            },
+            ".invalid": {
+                //style for all input elements when invalid
+                "color": "red"
+            },
+                // Styling all inputs
+            "input": {
+            "font-size": "14px",
+            "font-family":
+                "RobotoDraft,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif",
+            "color": "#555"
+            },
+            // Styling input state
+            ":focus": {
+            "color": "#555"
+            }
+        },
+        ccnPlaceHolder: "1234 5678 9012 3456", //for example
+        cvvPlaceHolder: "123", //for example
+        expPlaceHolder: "MM/YY" //for example
+    };
+
+    //Run the following command after Document Object Model (DOM) is fully loaded 
+    window.addEventListener("DOMContentLoaded",(e)=>{
+
+       bluesnap.hostedPaymentFieldsCreate(bsObj);
+       // alert(tokenId)
+    })
+
+     function do_when_clicking_submit_button(){
+         
+        bluesnap.hostedPaymentFieldsSubmitData( function(callback)
+        {
+            alert("function call good");
+            if (null != callback.cardData)
+            {
+                console.log('card type: ' + callback.cardData.ccType +
+                ', last 4 digits: ' + callback.cardData.last4Digits +
+                ', exp: ' + callback.cardData.exp + 
+                ', issuing Country: ' + callback.cardData.issuingCountry + 
+                ', isRegulatedCard: ' + callback.cardData.isRegulatedCard + 
+                ', cardSubType: ' + callback.cardData.cardSubType + 
+                ', binCategory: ' + callback.cardData.binCategory + 
+                ' and ccBin: ' + callback.cardData.ccBin + 
+               ', after that I can call final submit');
+                // submit the form
+                // This is where you would perform final submission to your server
+                const userINfoSnap = getBlueSnapData(tokenId) //+ get the data from bluesnap servers
+                //set the specific API URL
+                const url = 'http://127.0.0.1:4000/cart/add-card';
+                //initialize the data to be posted
+                const data = {
+                    ccType: callback.cardData.ccType,
+                    last4Digits: callback.cardData.last4Digits,
+                    exp: callback.cardData.exp,
+                    issuingCountry: callback.cardData.issuingCountry,
+                    isRegulatedCard:callback.cardData.isRegulatedCard,
+                    cardSubType:callback.cardData.cardSubType,
+                    binCategory:callback.cardData.binCategory,
+                    ccBin:callback.cardData.ccBin
+                }
+
+                //function to make API Call
+                const postFetch = async function blah(url,data) {
+                let response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        //type of data
+                        'Content-Type': 'application/json'
+                    },
+                    //data to be posted on server
+                    body: JSON.stringify(data)
+                    });
+                //convert response to Json format
+                const myJson = await response.json();
+                //return the response
+                return myJson;
+                }
+                postFetch(url,data)
+                .then((data)=>{
+                    console.log(data); // getting info from the server here
+//+--                make post request to send infrmation so the customer could be charged or reroute the shopper to the next page.
+                    window.location="/cart/pay";
+                })
+                .catch((e)=>{
+                    console.log(e)
+                })
+            } 
+            else 
+            {
+                alert("function call bad");
+                var errorArray = callback.error;
+                for (i in errorArray) 
+                {
+                    console.log("Received error: tagId= " +
+                    errorArray[i].tagId + ", errorCode= " +
+                    errorArray[i].errorCode + ", errorDescription= " +
+                    errorArray[i].errorDescription);
+                }
+            }
+        });
+    }   
+</script>
+<style>
+    .panel {
+  width: 80%;
+  margin: 2em auto;
+}
+#cardholder-name{
+    width:100%;
+    margin-bottom: 20px;
+    background-color: none;
+
+}
+.panel-body {
+    max-width: 300px;
+    margin: 2em auto;
+    padding: 40px;
+    border-radius: 10px;
+    border-radius: 9px;
+    border-radius: 9px;
+    border-radius: 9px;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    box-shadow:  12px 12px 24px #c2c2c2, 
+                -12px -12px 24px #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.panel-heading{
+    margin-bottom: 10px;
+}
+label {
+  font-weight: 400;
+}
+
+.helper-text {
+  color: #E91E63; 
+  font-size: 12px;
+  margin-top: 5px;
+  height: 12px;
+  display: block;
+}
+
+.helper-text-green {
+  color: green;
+}
+#cardInfocnn{
+    display: grid;
+    grid-template-columns: 8fr 1fr;
+    width:100%;
+}
+#card-logo img{
+    display: inline;
+}
+/* Hosted Payment Fields styles*/
+.hosted-field-focus { 
+  outline: none;
+  background-image: linear-gradient(#009688, #009688), linear-gradient(#d2d2d2, #d2d2d2);
+  animation: input-highlight 0.5s forwards;
+  box-shadow: none;
+  background-size: 0 2px, 100% 1px;
+}
+.panel-heading{
+    width: 100%;
+}
+.panel-title{
+    background-color: #009688 ;
+    color: #ffffff;
+    padding:10px;
+    border-radius: 5px;
+    width:100%;
+    margin-top: -20px;
+}
+#submit-button{
+    display: block;
+    background-color:#4095da;
+    color: #ffffff;
+    padding: 10px 20px;
+    margin:20px auto;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    transition: transform 500ms;
+    transform:scale(1);
+}#submit-button:hover{
+    cursor: pointer;
+    transition: transform 500ms;
+    transform:scale(1.1);
+}
+
+.form-group{
+    display: inline-block;
+}
+.form-control{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    padding:5px;
+    border: 1px solid #000;
+    display: flex;
+    height:25px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    margin: 5px;
+}
+#cardDataFields{
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+
+}
+
+/* Hosted Payment Fields styles*/
+.hosted-field-focus { 
+  border: 1px solid #66afe9;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+
+.hosted-field-invalid {
+  border: 1px solid #e93143;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(233,49,67, 0.8);
+}
+
+.hosted-field-valid {
+  border: 1px solid #14ba57 ;
+}
+#checkoutPage{
+    display: grid;
+    grid-template-columns: 4fr auto;
+    max-width: 1200px;
+    margin:0px auto;
+}
+</style>

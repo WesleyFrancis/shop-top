@@ -1,6 +1,6 @@
 const db = require("../config/mysqlDAO.js");//! Might not work connect to dbconsole.
 // const User = require("../POJO/user.js");
-db.init();
+// db.init();
 const userModel ={
     Sql:"",
     addUser(UserObj)

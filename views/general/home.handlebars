@@ -60,7 +60,12 @@
                     {{/if}}
                 </div>
                 <div class="AddCart">
-                    <a href="/cart/add/{{this.productCode}}"><i class="fa fa-cart-plus"></i>&nbsp;Add to cart</a>    
+                    {{#if ../userinfo}}
+                        <a href="/cart/add/{{this.productCode}}"><i class="fa fa-cart-plus"></i>&nbsp;Add to cart</a>  
+                    {{else}}
+                        <a href="/auth/login/"><i class="fa fa-stopwatch"></i>&nbsp;Login for cart</a>
+                    {{/if}}
+                      
                 </div>
             </div>
             <div class="prodFooter">
