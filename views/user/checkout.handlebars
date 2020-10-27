@@ -1,7 +1,59 @@
-<div id="checkoutPage">
-    <div id="orderInformation">
-        hey i'm other information that the cx need
+{{#if hasCard}}
+    <div id="CartBreadcrumb">
+        <div><span>1</span>Confirm Cart</div>
+        <div id="active"><span>2</span>Choose Card</div>
+        <div><span>3</span>Select Address</div>
+        <div><span>4</span>Pay</div>
     </div>
+    <div style="font-weight:500;text-align:center;margin:20px 0px">Select a credit card To charge</div>
+    <div class="cardContainer">
+        {{#each cards}}
+            <div class="card">
+                <div class="last4digits">**** **** **** {{this.last4digits}}</div>
+                <div class="ccType">{{this.ccType}}</div>
+                <div class="cardSubType">{{this.cardSubType}}</div>
+                <div class="exp">{{this.exp}}</div>
+            </div>
+            
+        {{/each}}
+    </div>
+    <div id="checkoutinfo" style="position:relative;margin:10px auto;width:100%;display:inline-block">
+        <button style="display:block;margin:0px auto;border:1px inset #c5c5c5;border-radius: 50px;background: linear-gradient(145deg, #ccd1d6, #f3f8ff);box-shadow:  20px 20px 60px #c1c5ca,-20px -20px 60px #ffffff;">
+            <a href="/cart/pay" style="font-weight:700;padding:10px">
+                Proceed to checkout
+            </a>
+        </button>
+    </div>
+    <script>
+        //+ make it so that only 1 card would be selected on checkout and that 
+        //+ info is saved to a session to be accessed later by the address page
+        let cardCont = document.querySelector(".cardContainer");
+        let cards = document.querySelectorAll(".card");
+        let proceed = document.querySelector("#checkoutinfo")
+
+            window.addEventListener("DOMContentLoaded",(e)=>{
+                proceed.style.display="none";
+            })
+            cardCont.addEventListener("click",(evt)=>{
+               cards.forEach((ele)=>{
+                ele.style.border="none";
+            })
+            if(evt.target.className =="card")
+            {
+                evt.target.style.border="2px solid #fff";
+                proceed.style.display="block";
+            }
+                                
+            })
+    </script>
+{{else}}
+<div id="CartBreadcrumb">
+    <div><span>1</span>Confirm Cart</div>
+    <div id="active"><span>2</span>Add New Card</div>
+    <div><span>3</span>Select Address</div>
+    <div><span>4</span>Pay</div>
+</div>
+<div id="checkoutPage">
     <form action="#" class="panel-body" method="POST" id="checkout-form">
         <div class="panel-heading">
             <h3 class="panel-title">Credit Card Payment</h3>
@@ -179,7 +231,11 @@ const headers = {
                     isRegulatedCard:callback.cardData.isRegulatedCard,
                     cardSubType:callback.cardData.cardSubType,
                     binCategory:callback.cardData.binCategory,
-                    ccBin:callback.cardData.ccBin
+                    ccBin:callback.cardData.ccBin,
+                    token:tokenId,
+                    firstName:"Nixon",
+                    lastName:"Json",
+                    phone:"868123456"
                 }
 
                 //function to make API Call
@@ -200,9 +256,16 @@ const headers = {
                 }
                 postFetch(url,data)
                 .then((data)=>{
-                    console.log(data); // getting info from the server here
+                    console.log(data.userVault); // getting info from the server here
 //+--                make post request to send infrmation so the customer could be charged or reroute the shopper to the next page.
-                    window.location="/cart/pay";
+                    if(data.success)
+                    {
+                        window.location="/cart/pay";
+                    }
+                    else
+                    {
+                        console.log(error);
+                    }
                 })
                 .catch((e)=>{
                     console.log(e)
@@ -346,8 +409,15 @@ label {
 }
 #checkoutPage{
     display: grid;
-    grid-template-columns: 4fr auto;
+    grid-template-rows:1fr;
     max-width: 1200px;
     margin:0px auto;
+    
+}
+#orderInformation{
+    text-align: center;
+    font-weight: 500;
+    font-size: 1rem;
 }
 </style>
+{{/if}}

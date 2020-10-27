@@ -24,14 +24,26 @@ const cartModel = {
             .catch((e) => {reject(e)})
         })
     },
-    addNewCard(crd,userId,vaultedShopperId){
+    addNewCard(crd,userId){
         return new Promise ((resolve,reject)=>{
-            this.SQL="INSERT INTO card_info (userId,vaultedShopperId,binCategory,cardSubType,ccbin,ccType,exp,isregulated,issuingCountry,last4digits) VALUES (?,?,?,?,?,?,?,?,?)"
-            db.connection.query(this.SQL,[userId,vaultedShopperId,crd.binCategory,crd.cardSubType,crd.ccbin,crd.ccType,crd.exp,crd.isregulated,crd.issuingCountry,crd.last4digits])
+            this.SQL="INSERT INTO card_info (userId,binCategory,cardSubType,ccBin,ccType,exp,isRegulated,issuingcountry,last4digits) VALUES (?,?,?,?,?,?,?,?,?)"
+            db.connection.query(this.SQL,[userId,crd.binCategory,crd.cardSubType,crd.ccBin,crd.ccType,crd.exp,crd.isRegulatedCard,crd.issuingCountry,crd.last4Digits])
             .then(()=>{
                 resolve({message:"success"});
             })
             .catch((e) => {reject(e)})
+        })
+    },
+    getCards(userid){
+        return new Promise ((resolve,reject)=>{
+            this.SQL = "SELECT * FROM card_info WHERE userId = ?";
+            db.connection.query(this.SQL,[userid])
+            .then((rows,fields)=>{
+                resolve(rows);
+            })
+            .catch((e)=>{
+                console.warn(e);
+            })
         })
     }
 }

@@ -12,7 +12,7 @@
 </div>
 <div id="randomCategoriesLister">
     {{#each categories}}
-    <div class="categoryPresentation">
+    <div class="categoryPresentation" draggable="true">
         <div>{{this.categoryName}}</div>
         <a href="/search/category/{{this.categoryId}}">
             <img src="/img/{{this.categoryImgPath}}" alt="{{this.categoryName}}">

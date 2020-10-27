@@ -16,10 +16,11 @@ body{
     display: grid;
     grid-template-rows: auto auto auto;
     height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 footer{
   display:grid;
-  position: sticky;
+  position: relative;
   bottom: 0px;
   grid-template-columns: 1fr 1fr 1fr;
   margin-top:10px;
@@ -322,7 +323,6 @@ box-shadow:  10px 10px 19px #adb0b5,
       color: #081A78;
       font-weight: 700;
       width: 265px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
   .prodCategory{
       padding-top:10px;
@@ -341,13 +341,11 @@ box-shadow:  10px 10px 19px #adb0b5,
     background: rgb(3,206,149);
     background: linear-gradient(90deg, rgba(3,206,149,1) 41%, rgba(71,255,79,1) 100%);
     color: #fff;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-decoration: none;
   }
   .AddCart a {
     color: #5F6368;
     text-decoration: none;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 500;
   }
   .prodFooter{
@@ -1104,4 +1102,128 @@ place-items: center;
   border-radius: 5px;
   box-shadow: 4px 4px 10px #aaaaaa;
   margin-top: 20px;
+  
+}
+#checkoutinfo > button > a{
+  animation-name: glow;
+  animation-duration: 5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  -moz-animation-direction: alternate-reverse;
+}
+@keyframes glow {
+  0%   {color: #1f1f1f}
+  50% { color: #f5d000;}
+  100% {color: #1f1f1f}
+
+}
+#CartBreadcrumb{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);  
+  margin: 0px auto;
+  width: 650px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#CartBreadcrumb > div> span{
+  border:1px solid #c5c5c5;
+  border-radius: 40%;
+  padding:7px 10px;
+  margin-right: 5px;
+  background-color: #d7f6ff;
+  font-weight: 500;
+  border-radius: 50px;
+  background: linear-gradient(145deg, #ccd1d6, #f3f8ff);
+  box-shadow:  20px 20px 60px #c1c5ca, 
+            -20px -20px 60px #ffffff;
+}
+#CartBreadcrumb > div{
+  position: relative;
+  font-weight: 500;
+  margin-right:10px ;
+}
+
+#CartBreadcrumb #active::after{
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: #009DCD;
+  position: absolute;
+  bottom: -12px;
+  left: 0px;
+  animation-name: loader;
+  animation-duration: 5s;
+}
+@keyframes loader {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0ms ease-out ;
+      }
+  to {transform: scaleX(1);
+    transform-origin: left;
+    transition: transform 1s ease-in ;}
+}
+.cardContainer{
+  display: grid;
+  grid-template-columns: repeat(auto-fit,370px);
+  max-width: 1200px;
+  width: 80%;
+  /* background-color: #ffffff; */
+  margin: 0px auto;
+  gap: 20px;
+  justify-content: center;
+  color:#ffffff;
+}
+.card{
+width:100%;
+height:200px;
+margin:10px;
+border-radius: 5px;/*
+background: linear-gradient(145deg, #ffffff, #e6e6e6);
+box-shadow:  20px 20px 52px #bfbfbf, 
+             -20px -20px 52px #ffffff;
+transition: box-shadow 2s; */
+
+/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#f3c5bd+0,e86c57+50,ea2803+51,ff6600+75,c72200+100;Red+Gloss */
+background: #f3c5bd; /* Old browsers */
+background: -moz-linear-gradient(-45deg,  #f3c5bd 0%, #e86c57 50%, #ea2803 51%, #ff6600 75%, #c72200 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(-45deg,  #f3c5bd 0%,#e86c57 50%,#ea2803 51%,#ff6600 75%,#c72200 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg,  #f3c5bd 0%,#e86c57 50%,#ea2803 51%,#ff6600 75%,#c72200 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3c5bd', endColorstr='#c72200',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+}
+.card:hover{
+  cursor: pointer;
+  transition: box-shadow 2s;
+  box-shadow:  20px 20px 20px #49efff , 
+                -20px -20px 20px #f4ff6b ;
+}
+
+.last4digits{
+  position: absolute;
+  margin-top: 150px;
+  margin-left: 80px;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+.ccType{
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 10px;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+.cardSubType{
+  margin-top: 10px;
+  margin-left: 280px;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+.exp{
+  position: absolute;
+  margin-left: 250px;
+  margin-top: 115px;
+  font-weight: 500;
+  font-size: 1.2rem;
 }

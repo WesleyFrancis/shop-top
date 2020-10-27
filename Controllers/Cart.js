@@ -4,6 +4,8 @@ const {isAuth} =  require("../middleware/auth.js");
 const cartModule = require("../Models/Cart.js");
 const productModel = require("../Models/Product.js");
 const fetch = require('node-fetch');
+const cartModel = require('../Models/Cart.js');
+const { json } = require('express');
 
 
 Routes.get("/",async(req,res)=>{
@@ -74,35 +76,64 @@ Routes.get("/add/:id", async(req,res)=>{
 
 })
 
-Routes.get("/checkout",(req,res)=>{
-let code = `${process.env.B_SNAP_KEY}`;
-const headers = {
-    'Content-Type': 'application/json',
-    'Accept':'application/json',
-    'Authorization': `Basic ${code}`,
+Routes.get("/checkout",isAuth,(req,res)=>{
+    cartModel.getCards(req.session.userData.userId) //+ check to see if the user has a card already This should determine in this is skipped or not
+        .then((rows)=>{
+            const cards = rows[0];
+            const totalCards = rows[0].length;
 
-  }
+            if(cards.length>0)
+            {//+ There's a card on file we can use that and continue
+                //! redirect to select address as there's a card on file already
+                res.render("user/checkout",{
+                    nav:true,
+                    orderTotal:691.80,
+                    hasCard:true,
+                    cards,
+                    userinfo:req.session.userData,
+                })
 
-    fetch('https://sandbox.bluesnap.com/services/2/payment-fields-tokens/',{
-        method:'POST',
-        headers:headers
-    })
-  .then(response => {
-        let loc="";
-        loc = response.headers.get('Location');
-        let toeknArray = loc.split("/");
-        let token  = toeknArray[6];
-        res.render("user/checkout",{
-            nav:true,
-            orderTotal:691.80,
-            token:token,
-            code:code
+            }
+            else{//+ Setup blueSnap
+                let code = `${process.env.B_SNAP_KEY}`;
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Accept':'application/json',
+                    'Authorization': `Basic ${code}`,
+
+                }
+                    fetch('https://sandbox.bluesnap.com/services/2/payment-fields-tokens/',{
+                        method:'POST',
+                        headers:headers
+                    })
+                    .then(response => {
+                        let loc="";
+                        loc = response.headers.get('Location');
+                        let toeknArray = loc.split("/");
+                        let token  = toeknArray[6];
+                        // console.log(loc)
+                        res.render("user/checkout",{
+                            nav:true,
+                            orderTotal:691.80,
+                            token:token,
+                            code:code,
+                            hasCard:false,
+                            userinfo:req.session.userData,
+                        })
+                    })
+                    .catch(err => console.log(err))
+                
+                
+            }
+            //TODO : only let user add card to file if they need to if not they can continue to the select addres page 
+            //TODO : need to add more info to db to add shipping and billing address
+            //TODO : calculate cart total in that route before sending data to user. store sub total in local session
+            //TODO : find a way to host order history and remove items from card after checkout finish
+            //TODO : add delete item to cart items, use fetch to async delete, fade on delete
         })
-    })
-  .then(data => {
-   
-  })
-  .catch(err => console.log(err))
+        .catch((e)=>{
+            console.warn(e)
+        })
 })
 
 Routes.post("/add-card",(req,res)=>{
@@ -117,9 +148,59 @@ Routes.post("/add-card",(req,res)=>{
         issuingCountry: req.body.issuingCountry,
         last4Digits: req.body.last4Digits
     }
-    // cartModule.addNewCard(cardData,req.session.userData.userId,vaultedShopperId);
-    console.log(cardData);
-    res.status(200).json(cardData);
+    cartModule.addNewCard(cardData,req.session.userData.userId,0);
+            //TODO make another request to their server and save the shopper information to the token
+        
+    const headers = {
+        'Content-Type': 'application/json',
+        'Accept':'application/json',
+        'bluesnap-version': '3.0',
+        'Authorization': `Basic QVBJXzE0NDQ2NTAyMDMxNDQ5NDA0MjIzNjU6QkxVRTEyMw==`
+    }
+
+let vdata =    {
+        "amount": 11,
+        "softDescriptor": "DescTest",
+        "cardHolderInfo": {
+          "firstName": "test first name",
+          "lastName": "test last name",
+          "zip": "123456"
+        },
+        "currency": "USD",
+        "cardTransactionType": "AUTH_CAPTURE",
+        "pfToken": `${req.body.token}`
+}
+    vdata =JSON.stringify(vdata);
+console.table(vdata+"-----------------------------------------------------------");
+    fetch('https://sandbox.bluesnap.com/services/2/transactions',{
+        method:'POST',
+        headers:headers,
+        body: vdata
+    })
+    .then((response)=>
+    {
+        if (response.ok) 
+        {
+            return response.json();
+        }
+        return Promise.reject(response);
+    }).then((data)=>
+    {
+        console.log(data);
+    })
+    .catch((error)=>
+    {
+        console.warn('Something went wrong.', error);
+    });
+            
+    cartModule.addNewCard(cardData,req.session.userData.userId)
+    .then((m)=>{
+
+    })
+    .catch((e)=>{
+        res.status(400).json({success:false})
+        console.warn(e);
+    })
 })
 
 Routes.get("/pay",(req,res)=>{ 
@@ -170,4 +251,11 @@ Routes.post("/pay",(req,res)=>{
     })
 })
 
+Routes.get("/delete/:id",(req,res)=>{
+    //+ delete order from cart where user id = this user. and orderid = delete id
+})
 module.exports = Routes;
+
+//bluesnap-version: 2.0 add to the header to specsy which api i'm using to save shopper
+
+

@@ -1,0 +1,64 @@
+{{#if userinfo}}
+    <div id="CartBreadcrumb">
+        <div><span>1</span>Confirm Cart</div>
+        <div><span>2</span>Choose Card</div>
+        <div><span>3</span>Select Address</div>
+        <div id="active"><span>4</span>Pay</div>
+    </div>
+    <div id="cart-container">
+        <div id="items">
+            <h2>
+                Shopping Cart
+            </h2>
+        {{#each data}}
+            <div class="itemListCont">
+                <div>
+                    fsagdg
+                </div>
+                <div>
+                    <ul style="list-style: none;">
+                        <li style="color:rgb(8, 116, 204)"><h2>{{this.title}}</h2></li>
+                        <li>{{this.description}}</li>
+                        <li style="margin-top: 5px;">Quantity <span>1</span>&nbsp;<a href="">Delete</a></li>
+                    </ul>
+                </div>
+                <div style="text-align:end;">
+                    <b>${{this.price}}</b>
+                </div>
+            </div>
+
+        {{/each}}
+        </div>
+        <div id="checkoutinfo" >
+            <h3>Subtotal(2 item) :<br/>$55756</h3>
+            <br>
+            <button style="display:block;margin:0px auto;border:1px inset #c5c5c5;border-radius: 50px;background: linear-gradient(145deg, #ccd1d6, #f3f8ff);box-shadow:  20px 20px 60px #c1c5ca,-20px -20px 60px #ffffff;">
+                <a href="/cart/complete" style="font-weight:700;padding:10px">
+                    Proceed to checkout
+                </a>
+        </button>
+        </div>
+    </div>
+
+{{else}}
+ <div id="cart-container">
+        <div id="items">
+            <h2>
+                Shopping Cart<br />
+                Your Shopping Cart is empty.
+            </h2>
+            <div >
+              No items to display:<br/> Login to add items to your cart
+            </div>
+        </div>
+        <div id="checkoutinfo" >
+                <button  class="orangeGrd">
+                <a href="/auth/login">
+                    Login
+                </a>
+            </button>
+            
+        </div>
+    </div>
+{{/if}}
+

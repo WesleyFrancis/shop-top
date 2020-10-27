@@ -1,4 +1,10 @@
 {{#if userinfo}}
+    <div id="CartBreadcrumb">
+        <div id="active"><span>1</span>Confirm Cart</div>
+        <div><span>2</span>Choose Card</div>
+        <div><span>3</span>Select Address</div>
+        <div><span>4</span>Pay</div>
+    </div>
     <div id="cart-container">
         <div id="items">
             <h2>
@@ -13,26 +19,50 @@
                     <ul style="list-style: none;">
                         <li style="color:rgb(8, 116, 204)"><h2>{{this.title}}</h2></li>
                         <li>{{this.description}}</li>
-                        <li style="margin-top: 5px;">Quantity <span>1</span>&nbsp;<a href="">Delete</a></li>
+                        <li style="margin-top: 5px;">Quantity <span>1</span>&nbsp;<a href="/cart/delete/{{this.productCode}}">Delete</a></li>
                     </ul>
                 </div>
                 <div style="text-align:end;">
-                    <b>${{this.price}}</b>
+                    <b>$ <span class="price">{{this.price}}</span></b>
                 </div>
             </div>
 
         {{/each}}
         </div>
         <div id="checkoutinfo" >
-            <h3>Subtotal(2 item) :<br/>$55756</h3>
-            <button class="orangeGrd">
-                <a href="/cart/checkout">
+            <h3>Subtotal( <span id="itmQuant"></span> item) :<br/>$ <span id="productTotal"></span></h3>
+            <button style="border:1px inset #c5c5c5;border-radius: 50px;background: linear-gradient(145deg, #ccd1d6, #f3f8ff);box-shadow:  20px 20px 60px #c1c5ca,-20px -20px 60px #ffffff;">
+                <a href="/cart/checkout" style="font-weight:700;padding:10px">
                     Proceed to checkout
                 </a>
             </button>
         </div>
     </div>
+    <script>
 
+        window.addEventListener("DOMContentLoaded",(e)=>{
+            const prices = document.querySelectorAll(".price");
+            const Subtotal = document.querySelector("#productTotal");
+            const itmQuant =document.querySelector("#itmQuant");
+            let tot = 0;
+            let cartitems =0;
+            let total=0;
+            prices.forEach((item,i)=>{
+                cartitems +=1;
+                total += parseFloat(prices[i].innerHTML)   
+            })
+            itmQuant.innerHTML = cartitems;
+            Subtotal.innerHTML = total.toFixed(2)
+
+            const ProductObj = {
+                itemQuant :cartitems,
+                chargeTotal : total.toFixed(2)
+            }
+
+            localStorage.setItem("cartData", JSON.stringify(ProductObj));
+        })
+
+    </script>
 {{else}}
  <div id="cart-container">
         <div id="items">

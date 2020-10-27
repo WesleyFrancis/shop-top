@@ -48,5 +48,9 @@ route.get("/dashboard",isAuth,(req,res)=>{
 
 })
 
-
+route.get("blank",(req,res)=>{
+    res.render("user/blank",{
+        
+    })
+})
 module.exports = route;
